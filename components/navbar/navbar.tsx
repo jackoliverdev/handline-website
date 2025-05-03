@@ -39,6 +39,7 @@ export const NavBar: FC = () => {
     // Update dimensions when active item changes
     if (index !== -1 && itemRefs.current[index] && navRef.current) {
       const activeItem = itemRefs.current[index];
+      if (!activeItem || !navRef.current) return;
       const navRect = navRef.current.getBoundingClientRect();
       const rect = activeItem.getBoundingClientRect();
       
