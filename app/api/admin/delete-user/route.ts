@@ -1,18 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { initializeFirebaseAdmin } from '@/lib/firebase-admin';
 
 // Initialize Firebase Admin SDK if not already initialized
-if (getApps().length === 0) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_SDK || '{}');
-  
-  try {
-    initializeApp({
-      credential: cert(serviceAccount)
-    });
-  } catch (error) {
-    console.error('Firebase Admin initialization error:', error);
-  }
+try {
+  initializeFirebaseAdmin();
+} catch (error) {
+  console.error('Firebase Admin initialization error:', error);
 }
 
 export async function POST(request: NextRequest) {

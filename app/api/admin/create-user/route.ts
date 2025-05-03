@@ -1,24 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { initializeFirebaseAdmin } from '@/lib/firebase-admin';
 
 // Initialize Firebase Admin SDK if not already initialized
-if (getApps().length === 0) {
-  try {
-    const serviceAccountStr = process.env.FIREBASE_ADMIN_SDK;
-    if (!serviceAccountStr) {
-      throw new Error('FIREBASE_ADMIN_SDK environment variable is not set');
-    }
-    
-    // Remove any escaped newlines and properly parse JSON
-    const serviceAccount = JSON.parse(serviceAccountStr.replace(/\\n/g, '\n'));
-    
-    initializeApp({
-      credential: cert(serviceAccount)
-    });
-  } catch (error) {
-    console.error('Firebase Admin initialization error:', error);
-  }
+try {
+  initializeFirebaseAdmin();
+} catch (error) {
+  console.error('Firebase Admin initialization error:', error);
 }
 
 export async function POST(request: NextRequest) {
