@@ -4,9 +4,15 @@ import { getAuth } from 'firebase-admin/auth';
 
 // Initialize Firebase Admin SDK if not already initialized
 if (getApps().length === 0) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_SDK || '{}');
-  
   try {
+    const serviceAccountStr = process.env.FIREBASE_ADMIN_SDK;
+    if (!serviceAccountStr) {
+      throw new Error('FIREBASE_ADMIN_SDK environment variable is not set');
+    }
+    
+    // Remove any escaped newlines and properly parse JSON
+    const serviceAccount = JSON.parse(serviceAccountStr.replace(/\\n/g, '\n'));
+    
     initializeApp({
       credential: cert(serviceAccount)
     });
