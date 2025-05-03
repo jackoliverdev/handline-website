@@ -138,16 +138,16 @@ export default function BlogManagementPage() {
   return (
     <div className="space-y-6">
       {/* Header with search and create button */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex-1 min-w-[240px]">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+        <div className="flex-1 min-w-[180px]">
           <Input
             placeholder="Search blogs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-sm"
+            className="max-w-full sm:max-w-sm text-xs sm:text-sm h-8 sm:h-10"
           />
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href="/admin/blogs/create">
             <Plus className="mr-2 h-4 w-4" />
             Create New Blog Post
@@ -181,11 +181,11 @@ export default function BlogManagementPage() {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {filteredBlogs.map((blog) => (
-                <Card key={blog.id} className="overflow-hidden transition-all hover:shadow-md">
+                <Card key={blog.id} className="overflow-hidden transition-all hover:shadow-md p-2 sm:p-0">
                   {/* Image Section */}
-                  <div className="relative h-[180px] w-full overflow-hidden bg-muted">
+                  <div className="relative h-[120px] sm:h-[180px] w-full overflow-hidden bg-muted rounded-md">
                     {blog.image_url ? (
                       <Image
                         src={blog.image_url}
@@ -196,64 +196,59 @@ export default function BlogManagementPage() {
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center bg-muted">
-                        <ImageIcon className="h-16 w-16 text-muted-foreground/40" />
+                        <ImageIcon className="h-10 w-10 sm:h-16 sm:w-16 text-muted-foreground/40" />
                       </div>
                     )}
-                    <div className="absolute bottom-3 left-3">
+                    <div className="absolute bottom-2 left-2">
                       {blog.tags && blog.tags.length > 0 && (
-                        <Badge variant="secondary" className="bg-brand-primary/80 text-white text-xs">
+                        <Badge variant="secondary" className="bg-brand-primary/80 text-white text-[10px] sm:text-xs">
                           {blog.tags[0]}
                           {blog.tags.length > 1 && ` +${blog.tags.length - 1}`}
                         </Badge>
                       )}
                     </div>
                   </div>
-                  
-                  <div className="p-4 border-b">
-                    <div className="mb-2">
-                      <h3 className="font-medium line-clamp-1">{blog.title}</h3>
+                  <div className="p-2 sm:p-4 border-b">
+                    <div className="mb-1 sm:mb-2">
+                      <h3 className="font-medium text-xs sm:text-base line-clamp-1">{blog.title}</h3>
                     </div>
-                    
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2 sm:mb-3">
                       {blog.summary}
                     </p>
-                    
-                    <div className="flex items-center text-xs text-muted-foreground gap-2">
-                      <Calendar className="h-3.5 w-3.5" />
+                    <div className="flex items-center text-[10px] sm:text-xs text-muted-foreground gap-2">
+                      <Calendar className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                       <span>{formatDate(blog.published_at || blog.created_at)}</span>
                     </div>
                   </div>
-                  
-                  <div className="flex justify-between items-center px-4 py-3 bg-muted/20">
-                    <div className="flex space-x-2">
+                  <div className="flex justify-between items-center px-2 sm:px-4 py-2 sm:py-3 bg-muted/20">
+                    <div className="flex space-x-1 sm:space-x-2">
                       <Button
                         variant="ghost"
-                        size="sm"
-                        className="h-8 px-2"
+                        size="icon"
+                        className="h-7 w-7 p-0"
                         asChild
                       >
                         <Link href={`/admin/blogs/${blog.id}`}>
-                          <Edit className="h-4 w-4 mr-1" />
-                          Edit
+                          <Edit className="h-4 w-4" />
+                          <span className="sr-only">Edit</span>
                         </Link>
                       </Button>
                       <Button
                         variant="ghost"
-                        size="sm"
-                        className="h-8 px-2 text-destructive hover:bg-destructive/10"
+                        size="icon"
+                        className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
                         onClick={() => confirmDelete(blog)}
                       >
-                        <Trash className="h-4 w-4 mr-1" />
-                        Delete
+                        <Trash className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
                       </Button>
                     </div>
-                    
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-1 sm:space-x-2">
                       <div className="flex items-center space-x-1">
                         <Switch
                           checked={blog.is_published}
                           onCheckedChange={() => handleTogglePublished(blog.id)}
-                          className="data-[state=checked]:bg-green-500"
+                          className="data-[state=checked]:bg-green-500 h-5 w-9"
                         />
                         <Eye className={`h-4 w-4 ${blog.is_published ? 'text-green-600' : 'text-muted-foreground'}`} />
                       </div>

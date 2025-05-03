@@ -343,14 +343,19 @@ export default function CreateProductPage() {
   
   return (
     <div className="space-y-6">
-      <div className="flex items-center">
-        <Button variant="ghost" asChild className="mr-4">
+      <div className="flex items-center justify-between mb-2">
+        <Button variant="ghost" asChild className="mr-2">
           <Link href="/admin/product">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Products
           </Link>
         </Button>
+      </div>
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h1 className="text-2xl font-bold tracking-tight">Create New Product</h1>
+        <Button variant="outline" asChild>
+          <Link href="/admin/product">Cancel</Link>
+        </Button>
       </div>
       
       <form onSubmit={handleSubmit}>
@@ -359,63 +364,64 @@ export default function CreateProductPage() {
           <div className="md:col-span-4 space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Product Information</CardTitle>
-                <CardDescription>Enter the details for your new safety glove product.</CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Product Information</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Enter the details for your new safety glove product.</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Product Name</Label>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="name" className="text-xs sm:text-sm">Product Name</Label>
                     <Input
                       id="name"
                       placeholder="Enter product name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
+                      className="text-xs sm:text-sm h-8 sm:h-10"
                     />
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="shortDescription">Short Description</Label>
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="shortDescription" className="text-xs sm:text-sm">Short Description</Label>
                     <Input
                       id="shortDescription"
                       placeholder="Brief product description"
                       value={shortDescription}
                       onChange={(e) => setShortDescription(e.target.value)}
+                      className="text-xs sm:text-sm h-8 sm:h-10"
                     />
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Full Description</Label>
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="description" className="text-xs sm:text-sm">Full Description</Label>
                     <Textarea
                       id="description"
                       placeholder="Enter a detailed description of your product"
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      rows={5}
+                      rows={4}
                       required
+                      className="text-xs sm:text-sm"
                     />
                   </div>
-                  
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="temperature">Temperature Rating (°C)</Label>
+                  <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+                    <div className="space-y-1 sm:space-y-2">
+                      <Label htmlFor="temperature" className="text-xs sm:text-sm">Temperature Rating (°C)</Label>
                       <Input
                         id="temperature"
                         type="number"
                         placeholder="e.g. 500"
                         value={temperatureRating === null ? "" : temperatureRating}
                         onChange={(e) => setTemperatureRating(e.target.value === "" ? null : Number(e.target.value))}
+                        className="text-xs sm:text-sm h-8 sm:h-10"
                       />
                     </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="cutResistance">Cut Resistance Level</Label>
+                    <div className="space-y-1 sm:space-y-2">
+                      <Label htmlFor="cutResistance" className="text-xs sm:text-sm">Cut Resistance Level</Label>
                       <Input
                         id="cutResistance"
                         placeholder="e.g. Level 5"
                         value={cutResistanceLevel}
                         onChange={(e) => setCutResistanceLevel(e.target.value)}
+                        className="text-xs sm:text-sm h-8 sm:h-10"
                       />
                     </div>
                   </div>

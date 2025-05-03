@@ -785,17 +785,17 @@ export default function ProductManagementPage() {
             <div className="space-y-8">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {displayedProducts.map((product) => (
-                <Card key={product.id} className="overflow-hidden transition-all hover:shadow-md">
-                    <div className="relative aspect-[3/2] overflow-hidden bg-black">
+                <Card key={product.id} className="overflow-hidden transition-all hover:shadow-md p-2 sm:p-0">
+                    <div className="relative aspect-[3/2] overflow-hidden bg-black rounded-md">
                       {product.image_url ? (
                       <img 
                           src={product.image_url} 
                           alt={product.name} 
-                        className="h-full w-full object-contain p-2"
+                        className="h-full w-full object-contain p-1 sm:p-2"
                       />
                     ) : (
                         <div className="flex h-full w-full items-center justify-center bg-gray-900">
-                        <ShoppingBag className="h-10 w-10 text-muted-foreground/40" />
+                        <ShoppingBag className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground/40" />
                       </div>
                     )}
                     <div className="absolute top-1 right-1 flex flex-col gap-1">
@@ -807,80 +807,62 @@ export default function ProductManagementPage() {
                       )}
                     </div>
                   </div>
-                  
-                  <div className="p-3 border-t">
-                    <div className="flex justify-between items-start gap-1 mb-2">
-                        <h3 className="text-sm font-medium line-clamp-1">{product.name}</h3>
-                      <Badge variant="outline" className="capitalize text-xs px-1.5 h-5 shrink-0">
-                        {product.category || 'Uncategorized'}
+                  <div className="p-2 sm:p-3 border-t">
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-1 mb-2">
+                        <h3 className="text-xs sm:text-sm font-medium line-clamp-1">{product.name}</h3>
+                      <Badge variant="outline" className="capitalize text-[10px] sm:text-xs px-1.5 h-5 shrink-0 mt-1 sm:mt-0">
+                        {product.category || 'Uncategorised'}
                       </Badge>
                     </div>
-                    
-                    <p className="text-xs text-muted-foreground line-clamp-1 mb-2">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-1 mb-2">
                         {product.short_description || product.description?.substring(0, 60) || "No description"}
                       </p>
-                      
-                      <div className="flex justify-between items-center gap-2">
-                        <div className="flex flex-wrap gap-1 text-xs">
-                          {product.temperature_rating && (
-                            <Badge variant="outline" className="gap-1 h-5 px-1.5 text-xs">
-                              <Thermometer className="h-3 w-3" />
-                              {product.temperature_rating}°C
-                            </Badge>
-                          )}
-                          {product.cut_resistance_level && (
-                            <Badge variant="outline" className="gap-1 h-5 px-1.5 text-xs">
-                              <Scissors className="h-3 w-3" />
-                              {product.cut_resistance_level}
-                            </Badge>
+                      <div className="flex flex-wrap gap-1 text-[10px] sm:text-xs mb-2">
+                        {product.temperature_rating && (
+                          <Badge variant="outline" className="gap-1 h-5 px-1.5 text-[10px] sm:text-xs">
+                            <Thermometer className="h-3 w-3" />
+                            {product.temperature_rating}°C
+                          </Badge>
+                        )}
+                        {product.cut_resistance_level && (
+                          <Badge variant="outline" className="gap-1 h-5 px-1.5 text-[10px] sm:text-xs">
+                            <Scissors className="h-3 w-3" />
+                            {product.cut_resistance_level}
+                          </Badge>
                         )}
                       </div>
-                    </div>
-                    
-                      <div className="flex flex-col space-y-2 mt-3 pt-3 border-t">
-                        <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between gap-1 pt-2 border-t">
                         <Button
                           variant="ghost"
-                          size="sm"
-                          className="h-8 px-2"
+                          size="icon"
+                          className="h-7 w-7 p-0"
                           asChild
                         >
                           <Link href={`/admin/product/${product.id}`}>
-                            <Edit className="h-4 w-4 mr-1" />
-                            Edit
+                            <Edit className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
                           </Link>
                         </Button>
                         <Button
                           variant="ghost"
-                          size="sm"
-                          className="h-8 px-2 text-destructive hover:bg-destructive/10"
+                          size="icon"
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
                           onClick={() => confirmDelete(product)}
                         >
-                          <Trash className="h-4 w-4 mr-1" />
-                          Delete
+                          <Trash className="h-4 w-4" />
+                          <span className="sr-only">Delete</span>
                         </Button>
+                        <Switch
+                          checked={product.is_featured}
+                          onCheckedChange={() => handleToggleFeatured(product.id)}
+                          className="data-[state=checked]:bg-amber-500 h-5 w-9"
+                        />
+                        <Switch
+                          checked={!product.out_of_stock}
+                          onCheckedChange={() => handleToggleStock(product.id)}
+                          className="data-[state=checked]:bg-green-500 h-5 w-9"
+                        />
                       </div>
-                      
-                        <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-1">
-                          <Switch
-                              checked={product.is_featured}
-                            onCheckedChange={() => handleToggleFeatured(product.id)}
-                            className="data-[state=checked]:bg-amber-500"
-                          />
-                            <span className="text-xs whitespace-nowrap">Featured</span>
-                            <Star className={`h-4 w-4 ${product.is_featured ? 'text-amber-500 fill-amber-500' : ''}`} />
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Switch
-                              checked={!product.out_of_stock}
-                              onCheckedChange={() => handleToggleStock(product.id)}
-                            className="data-[state=checked]:bg-green-500"
-                          />
-                            <span className="text-xs whitespace-nowrap">In Stock</span>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </Card>
               ))}

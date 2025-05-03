@@ -133,7 +133,7 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
         </Button>
         
         {/* Logo */}
-        <div className="p-4">
+        <div className="p-4 mt-16 lg:mt-0">
           <Link href="/admin" className="flex items-center space-x-2">
             <div className="relative">
               <Avatar className="h-8 w-8">

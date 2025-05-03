@@ -896,32 +896,31 @@ export default function AdminDashboardPage() {
       </div>
       
       {/* Key Metrics Row */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
         {/* Total Products */}
-        <div className="overflow-hidden rounded-xl bg-card border border-border">
-          <div className="p-4 flex justify-between items-center">
+        <div className="overflow-hidden rounded-xl bg-card border border-border p-3 sm:p-4">
+          <div className="flex justify-between items-center">
             <div>
-              <div className="text-2xl font-bold text-card-foreground">
+              <div className="text-xl sm:text-2xl font-bold text-card-foreground">
                 {isLoading ? '...' : stats.totalProducts}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 {stats.featuredProducts} featured products
               </div>
             </div>
-            <div className="h-9 w-9 bg-muted rounded-full flex items-center justify-center">
+            <div className="h-8 w-8 sm:h-9 sm:w-9 bg-muted rounded-full flex items-center justify-center">
               <ShoppingBag className="h-4 w-4 text-brand-primary" />
             </div>
           </div>
-          <div className="bg-muted px-4 py-1.5 text-xs font-medium text-muted-foreground">
+          <div className="bg-muted px-3 py-1 text-xs font-medium text-muted-foreground mt-2 sm:mt-0">
             Total Products
           </div>
         </div>
-        
         {/* Stock Status */}
-        <div className="overflow-hidden rounded-xl bg-card border border-border">
-          <div className="p-4 flex justify-between items-center">
+        <div className="overflow-hidden rounded-xl bg-card border border-border p-3 sm:p-4">
+          <div className="flex justify-between items-center">
             <div>
-              <div className="text-2xl font-bold text-card-foreground">
+              <div className="text-xl sm:text-2xl font-bold text-card-foreground">
                 {isLoading ? '...' : stats.productsInStock}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
@@ -930,119 +929,113 @@ export default function AdminDashboardPage() {
                   "No products"}
               </div>
             </div>
-            <div className="h-9 w-9 bg-muted rounded-full flex items-center justify-center">
+            <div className="h-8 w-8 sm:h-9 sm:w-9 bg-muted rounded-full flex items-center justify-center">
               <CircleDollarSign className="h-4 w-4 text-brand-primary" />
             </div>
           </div>
-          <div className="bg-muted px-4 py-1.5 text-xs font-medium text-muted-foreground">
+          <div className="bg-muted px-3 py-1 text-xs font-medium text-muted-foreground mt-2 sm:mt-0">
             Products In Stock
           </div>
         </div>
-        
         {/* Blog Posts */}
-        <div className="overflow-hidden rounded-xl bg-card border border-border">
-          <div className="p-4 flex justify-between items-center">
+        <div className="overflow-hidden rounded-xl bg-card border border-border p-3 sm:p-4">
+          <div className="flex justify-between items-center">
             <div>
-              <div className="text-2xl font-bold text-card-foreground">
+              <div className="text-xl sm:text-2xl font-bold text-card-foreground">
                 {isLoading ? '...' : stats.totalBlogs}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 {stats.publishedBlogs} published posts
               </div>
             </div>
-            <div className="h-9 w-9 bg-muted rounded-full flex items-center justify-center">
+            <div className="h-8 w-8 sm:h-9 sm:w-9 bg-muted rounded-full flex items-center justify-center">
               <FileText className="h-4 w-4 text-brand-primary" />
             </div>
           </div>
-          <div className="bg-muted px-4 py-1.5 text-xs font-medium text-muted-foreground">
+          <div className="bg-muted px-3 py-1 text-xs font-medium text-muted-foreground mt-2 sm:mt-0">
             Total Blog Posts
           </div>
         </div>
-        
         {/* Draft Posts */}
-        <div className="overflow-hidden rounded-xl bg-card border border-border">
-          <div className="p-4 flex justify-between items-center">
+        <div className="overflow-hidden rounded-xl bg-card border border-border p-3 sm:p-4">
+          <div className="flex justify-between items-center">
             <div>
-              <div className="text-2xl font-bold text-card-foreground">
+              <div className="text-xl sm:text-2xl font-bold text-card-foreground">
                 {isLoading ? '...' : (stats.totalBlogs - stats.publishedBlogs)}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 Unpublished draft content
               </div>
             </div>
-            <div className="h-9 w-9 bg-muted rounded-full flex items-center justify-center">
+            <div className="h-8 w-8 sm:h-9 sm:w-9 bg-muted rounded-full flex items-center justify-center">
               <Clock className="h-4 w-4 text-brand-primary" />
             </div>
           </div>
-          <div className="bg-muted px-4 py-1.5 text-xs font-medium text-muted-foreground">
+          <div className="bg-muted px-3 py-1 text-xs font-medium text-muted-foreground mt-2 sm:mt-0">
             Draft Blog Posts
           </div>
         </div>
       </div>
 
       {/* Product Management Card */}
-      <Card className="mt-6">
-        <CardHeader className="pb-3">
-          <CardTitle>Product Management</CardTitle>
-          <CardDescription>Manage your HandLine safety glove products</CardDescription>
+      <Card className="mt-4 sm:mt-6">
+        <CardHeader className="pb-2 sm:pb-3">
+          <CardTitle className="text-lg sm:text-xl">Product Management</CardTitle>
+          <CardDescription className="text-sm sm:text-base">Manage your HandLine safety glove products</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Featured Products */}
-            <div className="bg-muted/20 rounded-lg p-4">
-              <h3 className="font-medium mb-2 flex items-center">
+            <div className="bg-muted/20 rounded-lg p-3 sm:p-4">
+              <h3 className="font-medium mb-2 flex items-center text-base sm:text-lg">
                 <Award className="h-4 w-4 mr-2 text-brand-primary" />
                 Featured Products
               </h3>
-              <div className="text-3xl font-bold mb-2">{stats.featuredProducts}</div>
-              <p className="text-sm text-muted-foreground">
+              <div className="text-2xl font-bold mb-2">{stats.featuredProducts}</div>
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {stats.totalProducts > 0 
                   ? `${Math.round((stats.featuredProducts / stats.totalProducts) * 100)}% of products are featured` 
                   : "No products available"}
               </p>
-              <div className="mt-4">
+              <div className="mt-3 sm:mt-4">
                 <Button size="sm" variant="outline" asChild>
                   <Link href="/admin/product">Manage Featured Products</Link>
                 </Button>
               </div>
             </div>
-            
             {/* Product Categories */}
-            <div className="bg-muted/20 rounded-lg p-4">
-              <h3 className="font-medium mb-2 flex items-center">
+            <div className="bg-muted/20 rounded-lg p-3 sm:p-4">
+              <h3 className="font-medium mb-2 flex items-center text-base sm:text-lg">
                 <SlidersHorizontal className="h-4 w-4 mr-2 text-brand-primary" />
                 Product Categories
               </h3>
               <div className="space-y-2 mt-2">
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span>Heat-Resistant Gloves</span>
                   <span className="font-medium">{Math.floor(stats.totalProducts * 0.4)}</span>
                 </div>
                 <Progress value={40} className="h-1" />
-                
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span>Cut-Resistant Gloves</span>
                   <span className="font-medium">{Math.floor(stats.totalProducts * 0.35)}</span>
                 </div>
                 <Progress value={35} className="h-1" />
-                
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span>Chemical-Resistant Gloves</span>
                   <span className="font-medium">{Math.floor(stats.totalProducts * 0.25)}</span>
                 </div>
                 <Progress value={25} className="h-1" />
               </div>
-              <div className="mt-4">
+              <div className="mt-3 sm:mt-4">
                 <Button size="sm" variant="outline" asChild>
                   <Link href="/admin/product">Manage Categories</Link>
                 </Button>
               </div>
             </div>
           </div>
-          
-          <div className="mt-6 pt-6 border-t">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-medium">Featured Products</h3>
+          <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2 sm:gap-0">
+              <h3 className="font-medium text-base sm:text-lg">Featured Products</h3>
               <div className="flex gap-2">
                 <Button 
                   variant="outline" 
@@ -1076,7 +1069,6 @@ export default function AdminDashboardPage() {
                 </Button>
               </div>
             </div>
-            
             {isLoading ? (
               <div className="flex justify-center items-center min-h-[200px]">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-brand-primary"></div>
@@ -1087,9 +1079,10 @@ export default function AdminDashboardPage() {
               </div>
             ) : (
               <div className="relative">
-                <div 
+                {/* Mobile: grid, Desktop: flex carousel */}
+                <div
                   id="featured-products-container"
-                  className="flex overflow-x-auto pb-6 space-x-4 scrollbar-hide" 
+                  className="grid grid-cols-2 gap-2 sm:flex sm:overflow-x-auto sm:pb-6 sm:space-x-4 sm:gap-0 scrollbar-hide"
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                   <style jsx global>{`
@@ -1098,109 +1091,90 @@ export default function AdminDashboardPage() {
                     }
                   `}</style>
                   {stats.topProducts.map((product) => (
-                    <div key={product.id} className="min-w-[280px] md:w-72 flex-shrink-0">
-                      <div className="bg-[#F5EFE0]/80 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col border border-brand-primary/10">
-                        <div className="relative h-48 bg-black">
-                          {product.image_url ? (
-                            <Image
-                              src={product.image_url || '/images/placeholder.png'}
-                              alt={product.title}
-                              fill
-                              className="object-contain p-4 transition-transform duration-500 hover:scale-105"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-gray-900">
-                              <ShoppingBag className="h-10 w-10 text-muted-foreground/40" />
-                            </div>
-                          )}
-                          
-                          <div className="absolute top-4 left-4 bg-brand-primary text-white py-1 px-3 rounded-full text-sm font-medium">
-                            {product.category || "Safety Gloves"}
+                    <div
+                      key={product.id}
+                      className="bg-[#F5EFE0]/80 rounded-lg overflow-hidden shadow-sm border border-brand-primary/10 flex flex-col h-full min-w-0 p-2 sm:p-5 w-full sm:min-w-[240px] md:w-72 flex-shrink-0"
+                    >
+                      {/* Image */}
+                      <div className="relative h-20 sm:h-48 bg-black rounded-md mb-2">
+                        {product.image_url ? (
+                          <Image
+                            src={product.image_url || '/images/placeholder.png'}
+                            alt={product.title}
+                            fill
+                            className="object-contain p-2 sm:p-4 transition-transform duration-500 hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-gray-900">
+                            <ShoppingBag className="h-8 w-8 text-muted-foreground/40" />
                           </div>
-                          
-                          {product.isOutOfStock && (
-                            <div className="absolute top-4 right-4 bg-red-500 text-white py-1 px-3 rounded-full text-sm font-medium">
-                              Out of Stock
-                            </div>
-                          )}
+                        )}
+                        {/* Category tag: hidden on mobile, visible on sm+ */}
+                        <div className="hidden sm:block absolute top-2 left-2 bg-brand-primary text-white py-0.5 px-2 rounded text-xs font-medium">
+                          {product.category || "Safety Gloves"}
                         </div>
-                        
-                        <div className="p-5 flex flex-col flex-grow">
-                          <h3 className="text-xl font-bold text-brand-dark mb-2 font-heading">{product.title}</h3>
-                          
-                          <p className="text-sm text-brand-secondary mb-4 line-clamp-2">
-                            {product.description || "High-quality safety gloves for industrial use"}
-                          </p>
-                          
-                          <div className="grid grid-cols-2 gap-4 mb-6">
-                            {product.temperature_rating && (
-                              <div className="flex items-center">
-                                <Flame className="h-4 w-4 text-brand-primary mr-1.5" />
-                                <div>
-                                  <p className="text-xs text-brand-secondary">Temperature</p>
-                                  <p className="font-medium text-brand-dark">{product.temperature_rating}°C</p>
-                                </div>
-                              </div>
-                            )}
-                            {product.cut_resistance_level && (
-                              <div className="flex items-center">
-                                <Scissors className="h-4 w-4 text-brand-primary mr-1.5" />
-                                <div>
-                                  <p className="text-xs text-brand-secondary">Cut Level</p>
-                                  <p className="font-medium text-brand-dark">{product.cut_resistance_level}</p>
-                                </div>
-                              </div>
-                            )}
+                        {product.isOutOfStock && (
+                          <div className="absolute top-2 right-2 bg-red-500 text-white py-0.5 px-2 rounded text-xs font-medium">
+                            Out of Stock
                           </div>
-                          
-                          <div className="mt-auto flex flex-col space-y-2 pt-3 border-t">
-                            <div className="flex items-center justify-between">
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-8 px-2"
-                                asChild
-                              >
-                                <Link href={`/admin/product/${product.id}`}>
-                                  <Edit className="h-4 w-4 mr-1" />
-                                  Edit
-                                </Link>
-                              </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-8 px-2 text-destructive hover:bg-destructive/10"
-                                onClick={() => toast({
-                                  title: "Action Required",
-                                  description: "Please go to Product Management to delete products",
-                                })}
-                              >
-                                <Trash className="h-4 w-4 mr-1" />
-                                Delete
-                              </Button>
-                            </div>
-                            
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-1">
-                                <Switch
-                                  checked={product.is_featured}
-                                  onCheckedChange={() => handleToggleFeatured(product.id)}
-                                  className="data-[state=checked]:bg-amber-500"
-                                />
-                                <span className="text-xs whitespace-nowrap">Featured</span>
-                                <Star className={`h-4 w-4 ${product.is_featured ? 'text-amber-500 fill-amber-500' : ''}`} />
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Switch
-                                  checked={!product.isOutOfStock}
-                                  onCheckedChange={() => handleToggleStock(product.id)}
-                                  className="data-[state=checked]:bg-green-500"
-                                />
-                                <span className="text-xs whitespace-nowrap">In Stock</span>
-                              </div>
-                            </div>
+                        )}
+                      </div>
+                      {/* Info */}
+                      <h3 className="text-xs sm:text-xl font-bold text-brand-dark mb-1 font-heading line-clamp-1 sm:line-clamp-2">
+                        {product.title}
+                      </h3>
+                      <p className="text-[10px] sm:text-sm text-brand-secondary mb-2 sm:mb-4 line-clamp-2">
+                        {product.description || "High-quality safety gloves for industrial use"}
+                      </p>
+                      <div className="flex flex-col gap-1 mb-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:mb-6">
+                        {product.temperature_rating && (
+                          <div className="flex items-center">
+                            <Flame className="h-3 w-3 sm:h-4 sm:w-4 text-brand-primary mr-1" />
+                            <span className="text-[10px] sm:text-xs text-brand-secondary">{product.temperature_rating}°C</span>
                           </div>
-                        </div>
+                        )}
+                        {product.cut_resistance_level && (
+                          <div className="flex items-center">
+                            <Scissors className="h-3 w-3 sm:h-4 sm:w-4 text-brand-primary mr-1" />
+                            <span className="text-[10px] sm:text-xs text-brand-secondary">{product.cut_resistance_level}</span>
+                          </div>
+                        )}
+                      </div>
+                      {/* Actions */}
+                      <div className="mt-auto flex items-center justify-between pt-2 border-t border-border gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 p-0"
+                          asChild
+                        >
+                          <Link href={`/admin/product/${product.id}`}>
+                            <Edit className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                          onClick={() => toast({
+                            title: "Action Required",
+                            description: "Please go to Product Management to delete products",
+                          })}
+                        >
+                          <Trash className="h-4 w-4" />
+                          <span className="sr-only">Delete</span>
+                        </Button>
+                        <Switch
+                          checked={product.is_featured}
+                          onCheckedChange={() => handleToggleFeatured(product.id)}
+                          className="data-[state=checked]:bg-amber-500 h-5 w-9"
+                        />
+                        <Switch
+                          checked={!product.isOutOfStock}
+                          onCheckedChange={() => handleToggleStock(product.id)}
+                          className="data-[state=checked]:bg-green-500 h-5 w-9"
+                        />
                       </div>
                     </div>
                   ))}

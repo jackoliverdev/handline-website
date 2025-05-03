@@ -335,16 +335,16 @@ export default function UserManagementPage() {
   
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Header and Add User button */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
         <h1 className="text-2xl font-bold tracking-tight">User Management</h1>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href="/admin/users/create">
             <Plus className="mr-2 h-4 w-4" />
             Add User
           </Link>
         </Button>
       </div>
-      
       <Card>
         <CardHeader>
           <CardTitle>Users</CardTitle>
@@ -353,21 +353,21 @@ export default function UserManagementPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="mb-4 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
+          {/* Filters and search */}
+          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:space-y-0 sm:space-x-3">
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search users..."
-                className="pl-8"
+                className="pl-8 text-xs sm:text-sm h-8 sm:h-10"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            
-            <div className="flex space-x-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:space-x-2 w-full sm:w-auto">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
+                  <Button variant="outline" className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-10">
                     {roleFilter ? `Role: ${roleFilter}` : "All Roles"}
                   </Button>
                 </DropdownMenuTrigger>
@@ -376,21 +376,14 @@ export default function UserManagementPage() {
                     All Roles
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setRoleFilter("admin")}>
-                    Admin
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setRoleFilter("moderator")}>
-                    Moderator
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setRoleFilter("user")}>
-                    User
-                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setRoleFilter("admin")}>Admin</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setRoleFilter("moderator")}>Moderator</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setRoleFilter("user")}>User</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
+                  <Button variant="outline" className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-10">
                     {statusFilter ? `Status: ${statusFilter}` : "All Statuses"}
                   </Button>
                 </DropdownMenuTrigger>
@@ -399,43 +392,100 @@ export default function UserManagementPage() {
                     All Statuses
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => setStatusFilter("active")}>
-                    Active
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setStatusFilter("pending")}>
-                    Pending
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setStatusFilter("suspended")}>
-                    Suspended
-                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setStatusFilter("active")}>Active</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setStatusFilter("pending")}>Pending</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setStatusFilter("suspended")}>Suspended</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </div>
-          
+          {/* User list/table */}
           <div className="rounded-md border">
-            <div className="grid grid-cols-12 gap-4 border-b px-4 py-3 font-medium text-xs sm:text-sm">
+            {/* Desktop table header */}
+            <div className="hidden sm:grid grid-cols-12 gap-4 border-b px-4 py-3 font-medium text-xs sm:text-sm">
               <div className="col-span-5 sm:col-span-4">User</div>
               <div className="col-span-3 sm:col-span-2">Role</div>
               <div className="col-span-3 sm:col-span-2">Status</div>
               <div className="hidden sm:block sm:col-span-3">Created</div>
               <div className="col-span-1">Actions</div>
             </div>
-            
-            {loading ? (
-              <div className="flex flex-col items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="mt-4 text-muted-foreground">Loading users...</p>
-              </div>
-            ) : filteredUsers.length === 0 ? (
-              <div className="px-4 py-12 text-center text-muted-foreground">
-                {searchQuery || roleFilter || statusFilter ? 
-                  "No users match your filters." : 
-                  "No users found. Add your first user."}
-              </div>
-            ) : (
-              <div className="divide-y">
-                {filteredUsers.map((user) => (
+            {/* Mobile card/list view */}
+            <div className="sm:hidden divide-y">
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <p className="mt-4 text-muted-foreground">Loading users...</p>
+                </div>
+              ) : filteredUsers.length === 0 ? (
+                <div className="px-4 py-12 text-center text-muted-foreground">
+                  {searchQuery || roleFilter || statusFilter ? 
+                    "No users match your filters." : 
+                    "No users found. Add your first user."}
+                </div>
+              ) : (
+                filteredUsers.map((user) => (
+                  <div key={user.id} className="flex flex-col gap-2 px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.photo_url || undefined} alt={user.display_name} />
+                        <AvatarFallback>
+                          {user.display_name 
+                            ? user.display_name.charAt(0).toUpperCase() 
+                            : user.email.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col overflow-hidden">
+                        <span className="font-medium truncate text-sm">{user.display_name || user.email.split('@')[0]}</span>
+                        <span className="text-xs text-muted-foreground truncate">{user.email}</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mt-1">
+                      <Badge variant={getRoleBadgeVariant(user.role)} className="capitalize text-xs px-2 py-0.5">{user.role || "user"}</Badge>
+                      <Badge variant={getStatusBadgeVariant(user.status)} className="capitalize text-xs px-2 py-0.5">{user.status || "active"}</Badge>
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      <Button asChild variant="ghost" size="icon" className="h-7 w-7 p-0">
+                        <Link href={`/admin/users/${user.id}`}>
+                          <Edit className="h-4 w-4" />
+                          <span className="sr-only">Edit</span>
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 p-0" onClick={() => { setSelectedUser(user); setIsRoleDialogOpen(true); }}>
+                        <Shield className="h-4 w-4" />
+                        <span className="sr-only">Change Role</span>
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 p-0" onClick={() => { setSelectedUser(user); setIsStatusDialogOpen(true); }}>
+                        {user.status === "suspended" ? <CheckCircle className="h-4 w-4" /> : <Ban className="h-4 w-4" />}
+                        <span className="sr-only">Change Status</span>
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 p-0" onClick={() => { setSelectedUser(user); setIsResetPasswordDialogOpen(true); }}>
+                        <Mail className="h-4 w-4" />
+                        <span className="sr-only">Reset Password</span>
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 p-0 text-destructive" onClick={() => { setSelectedUser(user); setIsDeleteDialogOpen(true); }}>
+                        <Trash className="h-4 w-4" />
+                        <span className="sr-only">Delete</span>
+                      </Button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+            {/* Desktop table view */}
+            <div className="hidden sm:divide-y sm:block">
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <p className="mt-4 text-muted-foreground">Loading users...</p>
+                </div>
+              ) : filteredUsers.length === 0 ? (
+                <div className="px-4 py-12 text-center text-muted-foreground">
+                  {searchQuery || roleFilter || statusFilter ? 
+                    "No users match your filters." : 
+                    "No users found. Add your first user."}
+                </div>
+              ) : (
+                filteredUsers.map((user) => (
                   <div 
                     key={user.id} 
                     className="grid grid-cols-12 gap-4 items-center px-4 py-3 text-sm"
@@ -535,9 +585,9 @@ export default function UserManagementPage() {
                       </DropdownMenu>
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
+                ))
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>

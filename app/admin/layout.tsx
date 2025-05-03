@@ -123,13 +123,14 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       
       {/* Main content */}
       <div 
-        className="transition-all duration-300 ease-in-out"
-        style={{ paddingLeft: isSidebarCollapsed ? '5rem' : '18rem' }}
+        className={`transition-all duration-300 ease-in-out
+          ${isSidebarCollapsed ? 'md:pl-20 lg:pl-24 xl:pl-28' : 'md:pl-64 lg:pl-72 xl:pl-80'}
+          pl-0`}
       >
-        <main className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+        <main className="min-h-screen py-6 sm:py-10 px-3 sm:px-6 lg:px-12 xl:px-16">
           {/* Page header with admin badge */}
-          <div className="mb-8 flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight">
+          <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center gap-2 mt-12 sm:mt-0">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               {pathname === '/admin' 
                 ? 'Admin Dashboard' 
                 : pathname?.includes('/users') 
@@ -146,7 +147,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                           ? 'Admin Inbox'
                           : 'Admin Panel'}
             </h1>
-            <span className="px-2 py-1 text-xs rounded bg-orange-100 text-brand-primary font-semibold">
+            <span className="inline-block w-fit px-2 py-1 text-xs rounded bg-orange-100 text-brand-primary font-semibold">
               Admin Access
             </span>
           </div>

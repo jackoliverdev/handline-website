@@ -172,19 +172,18 @@ export default function CreateIndustryPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Button variant="outline" size="sm" asChild>
+      <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
+        <Button variant="outline" size="sm" asChild className="w-full sm:w-auto order-2 sm:order-1">
           <Link href="/admin/industries" className="flex items-center gap-1">
             <ArrowLeft className="h-4 w-4" />
             Back to Industries
           </Link>
         </Button>
-        
         <Button
           type="submit"
           disabled={isCreating}
           onClick={handleSubmit}
-          className="flex items-center gap-1"
+          className="flex items-center gap-1 w-full sm:w-auto order-1 sm:order-2"
         >
           {isCreating ? (
             <>
@@ -201,19 +200,19 @@ export default function CreateIndustryPage() {
       </div>
       
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* Main Content Column */}
           <div className="md:col-span-2 space-y-6">
-            <Card>
+            <Card className="p-2 sm:p-0">
               <CardHeader>
-                <CardTitle>Industry Details</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base sm:text-lg">Industry Details</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">
                   Basic information about the industry solution
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="industry_name" className="flex items-center gap-1">
+                  <Label htmlFor="industry_name" className="flex items-center gap-1 text-xs sm:text-sm">
                     Industry Name <span className="text-red-500">*</span>
                   </Label>
                   <Input
@@ -222,15 +221,15 @@ export default function CreateIndustryPage() {
                     value={industry.industry_name}
                     onChange={handleInputChange}
                     placeholder="e.g., Manufacturing, Healthcare, Construction"
-                    className={errors.industry_name ? "border-red-500" : ""}
+                    className={`text-xs sm:text-sm h-8 sm:h-10 ${errors.industry_name ? "border-red-500" : ""}`}
                   />
                   {errors.industry_name && (
-                    <p className="text-red-500 text-sm">Industry name is required</p>
+                    <p className="text-red-500 text-xs sm:text-sm">Industry name is required</p>
                   )}
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="description" className="flex items-center gap-1">
+                  <Label htmlFor="description" className="flex items-center gap-1 text-xs sm:text-sm">
                     Description <span className="text-red-500">*</span>
                   </Label>
                   <Textarea
@@ -239,19 +238,19 @@ export default function CreateIndustryPage() {
                     value={industry.description}
                     onChange={handleInputChange}
                     placeholder="Describe the industry and key challenges. Use a new line with '- ' to create bullet points for features."
-                    className={`min-h-[150px] ${errors.description ? "border-red-500" : ""}`}
+                    className={`min-h-[100px] sm:min-h-[150px] text-xs sm:text-sm ${errors.description ? "border-red-500" : ""}`}
                   />
                   {errors.description && (
-                    <p className="text-red-500 text-sm">Description is required</p>
+                    <p className="text-red-500 text-xs sm:text-sm">Description is required</p>
                   )}
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Use the first paragraph for a brief overview. Add bullet points with '- ' prefix for features.
                   </p>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="content">
-                    Detailed Content <span className="text-muted-foreground text-sm">(Optional)</span>
+                  <Label htmlFor="content" className="text-xs sm:text-sm">
+                    Detailed Content <span className="text-muted-foreground text-xs sm:text-sm">(Optional)</span>
                   </Label>
                   <Textarea
                     id="content"
@@ -259,9 +258,9 @@ export default function CreateIndustryPage() {
                     value={industry.content}
                     onChange={handleInputChange}
                     placeholder="Add detailed markdown content for the industry page. This can include headers, lists, and paragraphs."
-                    className="min-h-[300px]"
+                    className="min-h-[200px] sm:min-h-[300px] text-xs sm:text-sm"
                   />
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Markdown formatting is supported. Use # for headings, - for lists, etc.
                   </p>
                 </div>
@@ -272,15 +271,15 @@ export default function CreateIndustryPage() {
           {/* Sidebar Column */}
           <div className="space-y-6">
             {/* Image Upload */}
-            <Card>
+            <Card className="p-2 sm:p-0">
               <CardHeader>
-                <CardTitle>Industry Image</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base sm:text-lg">Industry Image</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">
                   Upload a representative image for this industry
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="rounded-lg border-2 border-dashed border-gray-300 p-4 text-center">
+                <div className="rounded-lg border-2 border-dashed border-gray-300 p-2 sm:p-4 text-center">
                   {previewImage ? (
                     <div className="relative aspect-video w-full overflow-hidden rounded-md">
                       <Image
@@ -305,9 +304,9 @@ export default function CreateIndustryPage() {
                       </Button>
                     </div>
                   ) : (
-                    <div className="py-4">
-                      <Factory className="mx-auto h-12 w-12 text-gray-400" />
-                      <p className="mt-2 text-sm text-gray-500">
+                    <div className="py-2 sm:py-4">
+                      <Factory className="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400" />
+                      <p className="mt-2 text-xs sm:text-sm text-gray-500">
                         Recommended size: 1200 x 630 pixels
                       </p>
                     </div>
@@ -325,7 +324,7 @@ export default function CreateIndustryPage() {
                     type="button"
                     variant="outline"
                     onClick={() => fileInputRef.current?.click()}
-                    className="mt-4"
+                    className="mt-2 sm:mt-4 w-full"
                   >
                     <Upload className="h-4 w-4 mr-2" />
                     {previewImage ? "Change Image" : "Upload Image"}
@@ -339,10 +338,10 @@ export default function CreateIndustryPage() {
             </Card>
             
             {/* Related Products */}
-            <Card>
+            <Card className="p-2 sm:p-0">
               <CardHeader>
-                <CardTitle>Related Products</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base sm:text-lg">Related Products</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">
                   Select products that are relevant to this industry
                 </CardDescription>
               </CardHeader>
@@ -367,11 +366,11 @@ export default function CreateIndustryPage() {
                           ) : null;
                         })
                       ) : (
-                        <p className="text-sm text-muted-foreground">No related products selected.</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">No related products selected.</p>
                       )}
                     </div>
-                    <div className="mt-4">
-                      <Label htmlFor="product-select">Add a product:</Label>
+                    <div className="mt-2 sm:mt-4">
+                      <Label htmlFor="product-select" className="text-xs sm:text-sm">Add a product:</Label>
                       <Select
                         onValueChange={(value) => {
                           if (value) {
@@ -382,14 +381,14 @@ export default function CreateIndustryPage() {
                           }
                         }}
                       >
-                        <SelectTrigger id="product-select">
+                        <SelectTrigger id="product-select" className="text-xs sm:text-sm h-8 sm:h-10">
                           <SelectValue placeholder="Select a product to add..." />
                         </SelectTrigger>
                         <SelectContent>
                           {availableProducts
                             .filter(product => !industry.related_products.includes(product.id))
                             .map((product) => (
-                              <SelectItem key={product.id} value={product.id}>
+                              <SelectItem key={product.id} value={product.id} className="text-xs sm:text-sm">
                                 {product.name}
                               </SelectItem>
                             ))}
@@ -400,8 +399,8 @@ export default function CreateIndustryPage() {
                 ) : (
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>No products available</AlertTitle>
-                    <AlertDescription>
+                    <AlertTitle className="text-xs sm:text-sm">No products available</AlertTitle>
+                    <AlertDescription className="text-xs sm:text-sm">
                       Add products in the product management section first.
                     </AlertDescription>
                   </Alert>

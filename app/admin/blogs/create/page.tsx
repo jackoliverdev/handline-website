@@ -161,8 +161,8 @@ export default function CreateBlogPage() {
   
   return (
     <div className="space-y-6">
-      <div className="flex items-center">
-        <Button variant="ghost" asChild className="mr-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-2">
+        <Button variant="ghost" asChild className="w-full sm:w-auto">
           <Link href="/admin/blogs">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Blogs
@@ -170,44 +170,43 @@ export default function CreateBlogPage() {
         </Button>
         <h1 className="text-2xl font-bold tracking-tight">Create New Blog Post</h1>
       </div>
-      
       <form onSubmit={handleSubmit}>
-        <div className="grid gap-6 md:grid-cols-6">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-6">
           {/* Main content area - 4 columns */}
-          <div className="md:col-span-4 space-y-6">
+          <div className="md:col-span-4 space-y-4 sm:space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Blog Content</CardTitle>
-                <CardDescription>Write your blog post content here.</CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Blog Content</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Write your blog post content here.</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="title">Title</Label>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="title" className="text-xs sm:text-sm">Title</Label>
                     <Input
                       id="title"
                       placeholder="Enter blog post title"
                       value={title}
                       onChange={(e) => handleTitleChange(e.target.value)}
                       required
+                      className="text-xs sm:text-sm h-8 sm:h-10"
                     />
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="slug">Slug</Label>
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="slug" className="text-xs sm:text-sm">Slug</Label>
                     <Input
                       id="slug"
                       placeholder="Enter URL slug"
                       value={slug}
                       onChange={(e) => setSlug(e.target.value)}
+                      className="text-xs sm:text-sm h-8 sm:h-10"
                     />
                     <p className="text-xs text-muted-foreground">
                       The URL-friendly version of the title. Leave blank to generate automatically.
                     </p>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="summary">Summary</Label>
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="summary" className="text-xs sm:text-sm">Summary</Label>
                     <Textarea
                       id="summary"
                       placeholder="Enter a short summary of your blog post"
@@ -215,18 +214,18 @@ export default function CreateBlogPage() {
                       onChange={(e) => setSummary(e.target.value)}
                       rows={3}
                       required
+                      className="text-xs sm:text-sm"
                     />
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="content">Content (Markdown)</Label>
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label htmlFor="content" className="text-xs sm:text-sm">Content (Markdown)</Label>
                     <Tabs
                       defaultValue="edit"
                       value={previewTab}
                       onValueChange={setPreviewTab}
                       className="w-full"
                     >
-                      <TabsList className="grid w-full grid-cols-2">
+                      <TabsList className="flex overflow-x-auto whitespace-nowrap flex-nowrap scrollbar-hide px-1 sm:px-0">
                         <TabsTrigger value="edit">Edit</TabsTrigger>
                         <TabsTrigger value="preview">Preview</TabsTrigger>
                       </TabsList>
@@ -236,12 +235,12 @@ export default function CreateBlogPage() {
                           placeholder="Write your content in Markdown format"
                           value={content}
                           onChange={(e) => setContent(e.target.value)}
-                          rows={15}
+                          rows={10}
                           required
-                          className="font-mono"
+                          className="font-mono text-xs sm:text-sm"
                         />
                       </TabsContent>
-                      <TabsContent value="preview" className="p-4 border rounded-md min-h-[300px] markdown-preview">
+                      <TabsContent value="preview" className="p-4 border rounded-md min-h-[200px] sm:min-h-[300px] markdown-preview text-xs sm:text-sm">
                         {content ? (
                           <div dangerouslySetInnerHTML={renderMarkdown(content)} />
                         ) : (
@@ -254,21 +253,20 @@ export default function CreateBlogPage() {
               </CardContent>
             </Card>
           </div>
-          
           {/* Sidebar - 2 columns */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-4 sm:space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Publication Settings</CardTitle>
-                <CardDescription>Configure how your blog post appears.</CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Publication Settings</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Configure how your blog post appears.</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="tags">Tags</Label>
+                    <Label htmlFor="tags" className="text-xs sm:text-sm">Tags</Label>
                     <div className="flex flex-wrap gap-2 mb-2">
                       {tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="flex items-center gap-1 px-3 py-1">
+                        <Badge key={tag} variant="secondary" className="flex items-center gap-1 px-3 py-1 text-xs sm:text-sm">
                           {tag}
                           <button 
                             type="button" 
@@ -281,7 +279,6 @@ export default function CreateBlogPage() {
                         </Badge>
                       ))}
                     </div>
-                    
                     <div className="flex space-x-2">
                       <Input
                         id="tag-input"
@@ -289,18 +286,18 @@ export default function CreateBlogPage() {
                         value={currentTag}
                         onChange={(e) => setCurrentTag(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="flex-grow"
+                        className="flex-grow text-xs sm:text-sm h-8 sm:h-10"
                       />
                       <Button 
                         type="button" 
                         variant="outline" 
                         onClick={addTag}
                         disabled={!currentTag.trim()}
+                        className="text-xs sm:text-sm h-8 sm:h-10"
                       >
                         Add
                       </Button>
                     </div>
-                    
                     <div className="mt-2">
                       <p className="text-xs text-muted-foreground mb-1">Suggested tags:</p>
                       <div className="flex flex-wrap gap-1">
@@ -308,7 +305,7 @@ export default function CreateBlogPage() {
                           <Badge 
                             key={tag} 
                             variant="outline" 
-                            className="cursor-pointer hover:bg-accent"
+                            className="cursor-pointer hover:bg-accent text-xs sm:text-sm"
                             onClick={() => {
                               if (!tags.includes(tag)) {
                                 setTags([...tags, tag]);
@@ -321,10 +318,9 @@ export default function CreateBlogPage() {
                       </div>
                     </div>
                   </div>
-                  
                   <div className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <Label htmlFor="published">Published</Label>
+                      <Label htmlFor="published" className="text-xs sm:text-sm">Published</Label>
                       <p className="text-xs text-muted-foreground">
                         Make this blog post visible to the public.
                       </p>
@@ -335,17 +331,17 @@ export default function CreateBlogPage() {
                       onCheckedChange={setIsPublished}
                     />
                   </div>
-                  
                   <div className="space-y-2">
-                    <Label htmlFor="image-url">Cover Image URL</Label>
+                    <Label htmlFor="image-url" className="text-xs sm:text-sm">Cover Image URL</Label>
                     <Input
                       id="image-url"
                       placeholder="Enter image URL"
                       value={imageUrl || ''}
                       onChange={(e) => setImageUrl(e.target.value || null)}
+                      className="text-xs sm:text-sm h-8 sm:h-10"
                     />
                     {imageUrl && (
-                      <div className="mt-2 relative rounded-md overflow-hidden h-40">
+                      <div className="mt-2 relative rounded-md overflow-hidden h-32 sm:h-40">
                         <img
                           src={imageUrl}
                           alt="Cover preview"
@@ -357,9 +353,8 @@ export default function CreateBlogPage() {
                       Enter a URL to use for the blog cover image or upload a new image below.
                     </p>
                   </div>
-                  
                   <div className="space-y-2">
-                    <Label htmlFor="cover">Upload Cover Image</Label>
+                    <Label htmlFor="cover" className="text-xs sm:text-sm">Upload Cover Image</Label>
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -374,12 +369,12 @@ export default function CreateBlogPage() {
                       {isUploading ? (
                         <div className="flex flex-col items-center">
                           <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-brand-primary"></div>
-                          <p className="mt-2 text-sm text-muted-foreground">Uploading...</p>
+                          <p className="mt-2 text-xs sm:text-sm text-muted-foreground">Uploading...</p>
                         </div>
                       ) : (
                         <>
                           <Upload className="mx-auto h-8 w-8 text-muted-foreground" />
-                          <p className="mt-2 text-sm text-muted-foreground">
+                          <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
                             Click to upload a cover image
                           </p>
                         </>
@@ -388,11 +383,11 @@ export default function CreateBlogPage() {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="outline" type="button" asChild>
+              <CardFooter className="flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-0">
+                <Button variant="outline" type="button" asChild className="w-full sm:w-auto">
                   <Link href="/admin/blogs">Cancel</Link>
                 </Button>
-                <Button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
                   {isSubmitting ? "Creating..." : "Create Blog Post"}
                 </Button>
               </CardFooter>

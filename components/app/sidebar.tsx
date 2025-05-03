@@ -139,7 +139,7 @@ export function Sidebar({ className }: SidebarProps) {
         </Button>
         
         {/* Logo & Search */}
-        <div className="p-4">
+        <div className="p-4 mt-16 lg:mt-0">
           <div className="flex items-center justify-between">
             <Link href="/dashboard" className="flex items-center space-x-2">
               <Avatar className="h-8 w-8">

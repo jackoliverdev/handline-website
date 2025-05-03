@@ -47,13 +47,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         
         {/* Main content */}
         <div 
-          className="flex-1 flex flex-col transition-all duration-300 ease-in-out border-l border-border"
-          style={{ paddingLeft: isSidebarCollapsed ? '5rem' : '18rem' }}
+          className={`flex-1 flex flex-col transition-all duration-300 ease-in-out border-l border-border
+            ${isSidebarCollapsed ? 'md:pl-20' : 'md:pl-72'}
+            pl-0`}
         >
-          <main className="flex-1 flex flex-col py-10 px-4 sm:px-6 lg:px-8">
+          <main className="flex-1 flex flex-col py-6 sm:py-10 px-3 sm:px-6 lg:px-8">
             {/* Page header with current page title */}
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <div className="mb-6 sm:mb-8 pl-14 sm:pl-0">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                 {pathname === '/dashboard' 
                   ? 'Dashboard' 
                   : pathname?.includes('/team') 
