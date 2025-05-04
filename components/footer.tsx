@@ -41,7 +41,7 @@ export function Footer() {
               <div className="flex items-start space-x-2 sm:space-x-3">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-brand-primary mt-0.5" />
                 <p className="text-sm sm:text-base text-brand-secondary dark:text-gray-300">
-                  Via Industria 24, 22100 Como, Italy
+                  via Alfonso Salardi, 12, 22100 - COMO, Italy
                 </p>
               </div>
               <div className="flex items-center space-x-2 sm:space-x-3">

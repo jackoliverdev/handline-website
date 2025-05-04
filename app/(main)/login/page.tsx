@@ -4,38 +4,35 @@ import { OrSeparator } from "@/components/ui/or-separator";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Login | Example LTD",
-  description: "Sign in to your Example LTD account",
+  title: "Login | HandLine Company",
+  description: "Sign in to your HandLine Company account",
 };
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-b from-background to-background/80">
-      <div className="container flex flex-1 flex-col items-center justify-center py-12 md:py-20">
-        <div className="mx-auto w-full max-w-lg space-y-6 px-4 md:px-0">
+    <div className="min-h-screen flex flex-col bg-brand-light dark:bg-background pt-16 sm:pt-16">
+      <div className="flex flex-1 items-center justify-center py-12 sm:py-20">
+        <div className="w-full max-w-lg mx-auto px-4 sm:px-0 space-y-6">
           <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight font-heading text-brand-dark dark:text-white">
               Customer Portal
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-brand-secondary dark:text-gray-300 font-body">
               Access your account dashboard and services
             </p>
           </div>
-          
           <AuthCard />
-          
           <div className="space-y-4">
             <OrSeparator />
             <ProviderLoginButtons />
           </div>
-          
-          <div className="text-center text-sm text-muted-foreground">
+          <div className="text-center text-xs text-brand-secondary dark:text-gray-400 font-body">
             By signing in, you agree to our{" "}
-            <a href="/legal?tab=terms" className="underline underline-offset-4 hover:text-primary">
+            <a href="/legal?tab=terms" className="underline underline-offset-4 hover:text-brand-primary">
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="/legal?tab=privacy" className="underline underline-offset-4 hover:text-primary">
+            <a href="/legal?tab=privacy" className="underline underline-offset-4 hover:text-brand-primary">
               Privacy Policy
             </a>
           </div>
