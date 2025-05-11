@@ -53,6 +53,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
+import { useLanguage } from "@/lib/context/language-context";
 
 // Define types for our order data structure
 interface OrderItem {
@@ -74,6 +75,7 @@ interface Order {
 }
 
 export default function OrdersPage() {
+  const { language } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +87,7 @@ export default function OrdersPage() {
   useEffect(() => {
     const loadProductsAndOrders = async () => {
       try {
-        const { products } = await getFeaturedProducts();
+        const { products } = await getFeaturedProducts(language);
         setProducts(products);
 
         // Create mock orders using the real products
@@ -183,7 +185,7 @@ export default function OrdersPage() {
     };
 
     loadProductsAndOrders();
-  }, []);
+  }, [language]);
 
   // Toggle expanded order
   const toggleOrderExpand = (orderId: string) => {
