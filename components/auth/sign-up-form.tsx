@@ -25,6 +25,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserProfile } from "@/lib/user-service";
 import { saveUserToFirestore } from "@/lib/auth";
+import { useLanguage } from '@/lib/context/language-context';
 
 const passwordSchema = z.string()
   .min(8, { message: "Password must be at least 8 characters" })
@@ -72,6 +73,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
 
   const auth = useAuth();
   const router = useRouter();
+  const { t } = useLanguage();
 
   useEffect(() => {
     setRequirements({
@@ -173,11 +175,11 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-foreground">Email Address</FormLabel>
+                  <FormLabel className="text-sm text-foreground">{t('auth.email')}</FormLabel>
                   <FormControl>
                     <Input 
                       type="email" 
-                      placeholder="name@example.com" 
+                      placeholder={t('auth.emailPlaceholder')} 
                       {...field} 
                       className="bg-background"
                     />
@@ -191,12 +193,12 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-foreground">Password</FormLabel>
+                  <FormLabel className="text-sm text-foreground">{t('auth.password')}</FormLabel>
                   <div className="relative">
                     <FormControl>
                       <Input 
                         type={showPassword ? "text" : "password"} 
-                        placeholder="••••••••" 
+                        placeholder={t('auth.passwordPlaceholder')} 
                         {...field} 
                         onChange={(e) => {
                           field.onChange(e);
@@ -218,22 +220,22 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
                         <Eye className="h-4 w-4" />
                       )}
                       <span className="sr-only">
-                        {showPassword ? "Hide password" : "Show password"}
+                        {showPassword ? (t('auth.hidePassword') || 'Hide password') : (t('auth.showPassword') || 'Show password')}
                       </span>
                     </Button>
                   </div>
                   <div className="mt-2 space-y-1">
                     <PasswordRequirement 
                       met={requirements.minLength}
-                      label="At least 8 characters"
+                      label={t('auth.passwordRequirement.minLength')}
                     />
                     <PasswordRequirement 
                       met={requirements.hasNumber}
-                      label="At least one number"
+                      label={t('auth.passwordRequirement.hasNumber')}
                     />
                     <PasswordRequirement 
                       met={requirements.hasSpecial}
-                      label="At least one special character"
+                      label={t('auth.passwordRequirement.hasSpecial')}
                     />
                   </div>
                   <FormMessage />
@@ -245,12 +247,12 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm text-foreground">Confirm Password</FormLabel>
+                  <FormLabel className="text-sm text-foreground">{t('auth.confirmPassword')}</FormLabel>
                   <div className="relative">
                     <FormControl>
                       <Input 
                         type={showConfirmPassword ? "text" : "password"} 
-                        placeholder="••••••••" 
+                        placeholder={t('auth.passwordPlaceholder')} 
                         {...field} 
                         onChange={(e) => {
                           field.onChange(e);
@@ -272,7 +274,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
                         <Eye className="h-4 w-4" />
                       )}
                       <span className="sr-only">
-                        {showConfirmPassword ? "Hide password" : "Show password"}
+                        {showConfirmPassword ? (t('auth.hidePassword') || 'Hide password') : (t('auth.showPassword') || 'Show password')}
                       </span>
                     </Button>
                   </div>
@@ -284,12 +286,12 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
                       {passwordsMatch ? (
                         <>
                           <Check className="w-3.5 h-3.5 mr-1.5" />
-                          <span>Passwords match</span>
+                          <span>{t('auth.passwordRequirement.match')}</span>
                         </>
                       ) : (
                         <>
                           <AlertCircle className="w-3.5 h-3.5 mr-1.5" />
-                          <span>Passwords do not match</span>
+                          <span>{t('auth.passwordRequirement.noMatch')}</span>
                         </>
                       )}
                     </div>
@@ -304,7 +306,7 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
               className="w-full mt-2"
             >
               <UserPlus className="mr-2 h-4 w-4" />
-              Create Account
+              {t('auth.createAccount')}
             </Button>
           </fieldset>
         </form>
@@ -312,13 +314,13 @@ export const SignUpForm: FC<SignUpFormProps> = ({ onShowLogin, onSignUp }) => {
 
       <div className="mt-6 text-center text-sm">
         <p className="text-muted-foreground">
-          Already have an account?{" "}
+          {t('auth.alreadyHaveAccount')} {" "}
           <Button 
             variant="link" 
             onClick={onShowLogin}
             className="p-0 font-semibold text-primary hover:text-primary/80"
           >
-            Sign in
+            {t('auth.signInInstead')}
           </Button>
         </p>
       </div>

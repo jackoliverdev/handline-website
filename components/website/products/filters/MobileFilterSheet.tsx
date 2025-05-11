@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { X } from "lucide-react";
 import { formatCutLevel } from "@/lib/product-utils";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface MobileFilterSheetProps {
   isOpen: boolean;
@@ -54,11 +55,12 @@ export const MobileFilterSheet = ({
   toggleSection,
   activeFiltersCount,
 }: MobileFilterSheetProps) => {
+  const { t } = useLanguage();
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent side="left" className="w-full max-w-xs" onOpenAutoFocus={(e) => e.preventDefault()}>
         <SheetHeader>
-          <SheetTitle className="text-xl font-bold text-brand-dark dark:text-white">Filters</SheetTitle>
+          <SheetTitle className="text-xl font-bold text-brand-dark dark:text-white">{t('products.filters.title')}</SheetTitle>
         </SheetHeader>
         
         <div className="flex flex-col gap-4 mt-4">
@@ -69,7 +71,7 @@ export const MobileFilterSheet = ({
               onClick={() => toggleSection('category')}
             >
               <span className="flex items-center">
-                Category
+                {t('products.filters.category')}
                 {selectedCategory && selectedCategory !== "all" && (
                   <Badge className="ml-2 bg-brand-primary text-white">1</Badge>
                 )}
@@ -94,7 +96,7 @@ export const MobileFilterSheet = ({
                     htmlFor="category-all"
                     className="text-sm text-brand-secondary dark:text-gray-300 cursor-pointer"
                   >
-                    All Categories
+                    {t('products.filters.allCategories')}
                   </label>
                 </div>
                 {categories.map((category) => (
@@ -125,7 +127,7 @@ export const MobileFilterSheet = ({
                 onClick={() => toggleSection('subCategory')}
               >
                 <span className="flex items-center">
-                  Sub-Category
+                  {t('products.filters.subCategory')}
                   {selectedSubCategories.length > 0 && (
                     <Badge className="ml-2 bg-brand-primary text-white">{selectedSubCategories.length}</Badge>
                   )}
@@ -168,7 +170,7 @@ export const MobileFilterSheet = ({
                 onClick={() => toggleSection('temperature')}
               >
                 <span className="flex items-center">
-                  Temperature Rating
+                  {t('products.filters.temperature')}
                   {selectedTempRatings.length > 0 && (
                     <Badge className="ml-2 bg-brand-primary text-white">{selectedTempRatings.length}</Badge>
                   )}
@@ -211,7 +213,7 @@ export const MobileFilterSheet = ({
                 onClick={() => toggleSection('cutLevel')}
               >
                 <span className="flex items-center">
-                  Cut Resistance Level
+                  {t('products.filters.cutLevel')}
                   {selectedCutLevels.length > 0 && (
                     <Badge className="ml-2 bg-brand-primary text-white">{selectedCutLevels.length}</Badge>
                   )}
@@ -254,7 +256,7 @@ export const MobileFilterSheet = ({
                 onClick={() => toggleSection('industries')}
               >
                 <span className="flex items-center">
-                  Industries
+                  {t('products.filters.industries')}
                   {selectedIndustries.length > 0 && (
                     <Badge className="ml-2 bg-brand-primary text-white">{selectedIndustries.length}</Badge>
                   )}
@@ -298,13 +300,13 @@ export const MobileFilterSheet = ({
               onClick={clearFilters}
             >
               <X className="mr-1.5 h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
-              Clear All
+              {t('products.filters.clearAll')}
             </Button>
             <Button 
               className="flex-1 bg-brand-primary text-white hover:bg-brand-primary/90" 
               onClick={() => setIsOpen(false)}
             >
-              Apply
+              {t('products.filters.apply')}
             </Button>
           </div>
         </SheetFooter>

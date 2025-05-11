@@ -1,16 +1,39 @@
 'use client';
 
+import { motion } from 'framer-motion';
+import * as React from 'react';
+import { useLanguage } from "@/lib/context/language-context";
+import { MessageCircle } from 'lucide-react';
+
 import { ContactForm } from './contact-form';
 import { ContactInfo } from './contact-info';
 
 export function ContactSection() {
+  const { t } = useLanguage();
+
   return (
-    <section className="container max-w-7xl mx-auto py-12 md:py-16 bg-[#F5EFE0]/80 dark:bg-transparent backdrop-blur-sm">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-7">
+    <section className="py-16 md:py-24 bg-[#F5EFE0]/80 dark:bg-transparent">
+      <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mx-auto mb-8 text-center"
+        >
+          <div className="mb-4 inline-flex items-center rounded-full bg-brand-primary/10 px-3 py-1 text-sm border border-[#F28C38]/40 backdrop-blur-sm">
+            <MessageCircle className="h-4 w-4 mr-2 text-brand-primary" aria-hidden="true" />
+            <span className="text-brand-dark dark:text-white font-medium">
+              {t('contact.section.badge')}
+            </span>
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-dark dark:text-white">{t('contact.section.title')}</h2>
+          <p className="mt-4 text-lg text-brand-secondary dark:text-gray-300 max-w-2xl mx-auto">
+            {t('contact.section.description')}
+          </p>
+        </motion.div>
+
+        <div className="grid gap-12 lg:grid-cols-2">
           <ContactForm />
-        </div>
-        <div className="lg:col-span-5 lg:flex lg:flex-col lg:pt-0">
           <ContactInfo />
         </div>
       </div>

@@ -1,7 +1,6 @@
-import { BlogHero } from '@/components/website/blog/hero';
-import { BlogGrid } from '@/components/website/blog/grid';
 import { Metadata } from 'next';
 import { getAllBlogs } from '@/lib/blog-service';
+import BlogRoot from '@/components/website/blog/blog-root';
 
 export const metadata: Metadata = {
   title: 'Blog | HandLine Safety Insights',
@@ -18,12 +17,5 @@ export default async function BlogPage() {
   
   console.log(`Fetched ${blogPosts?.length || 0} blog posts for display`);
   
-  return (
-    <main className="flex flex-col min-h-[100dvh]">
-      <BlogHero />
-      <div id="blog-grid" className="bg-[#F5EFE0]/80 dark:bg-transparent py-12">
-        <BlogGrid blogPosts={blogPosts || []} />
-      </div>
-    </main>
-  );
+  return <BlogRoot blogPosts={blogPosts || []} />;
 } 

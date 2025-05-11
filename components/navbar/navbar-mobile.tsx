@@ -10,12 +10,30 @@ import Image from "next/image";
 import { WebsiteThemeToggle } from "@/components/theme/website-theme-toggle";
 import { useState } from "react";
 import { useWebsiteTheme } from "@/hooks/use-website-theme";
+import { useLanguage } from '@/lib/context/language-context';
 
 export const NavbarMobile = () => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const { theme, toggleTheme, mounted } = useWebsiteTheme();
-  
+  const { language, setLanguage, t } = useLanguage();
+
+  const toggleLanguage = () => {
+    const nextLang = language === 'en' ? 'it' : 'en';
+    setLanguage(nextLang);
+    document.cookie = `language=${nextLang}; path=/;`;
+    // No reload needed, context will update everything
+  };
+
+  const menuItems = [
+    { href: "/", label: t("navbar.home") },
+    { href: "/products", label: t("navbar.products") },
+    { href: "/industries", label: t("navbar.industries") },
+    { href: "/about", label: t("navbar.about") },
+    { href: "/blog", label: t("navbar.blog") },
+    { href: "/contact", label: t("navbar.contact") },
+  ];
+
   return (
     <>
       <Button 
@@ -60,14 +78,7 @@ export const NavbarMobile = () => {
 
             <div className="flex-1 overflow-auto py-6 px-4">
               <nav className="flex flex-col space-y-2">
-                {[
-                  { href: "/", label: "Home" },
-                  { href: "/products", label: "Products" },
-                  { href: "/industries", label: "Industries" },
-                  { href: "/about", label: "About Us" },
-                  { href: "/blog", label: "Blog" },
-                  { href: "/contact", label: "Contact" },
-                ].map((item) => {
+                {menuItems.map((item) => {
                   const isActive = pathname === item.href;
                   return (
                     <Link 
@@ -101,7 +112,21 @@ export const NavbarMobile = () => {
                   <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 text-brand-primary transition-all dark:rotate-0 dark:scale-100" />
                 </span>
               </button>
-              
+              {/* Language Toggle */}
+              <button
+                type="button"
+                onClick={toggleLanguage}
+                className="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-[#F5EFE0] dark:bg-gray-800/20 hover:bg-[#F5EFE0]/70 dark:hover:bg-gray-800/40 transition-colors border border-brand-primary/10 dark:border-brand-primary/20 focus:outline-none focus:ring-2 focus:ring-brand-primary/40"
+                aria-label={t('navbar.language.toggleLabel')}
+              >
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('navbar.language.toggleLabel')}</span>
+                <span className="rounded-full h-8 w-8 bg-white dark:bg-gray-800 border border-brand-primary/20 dark:border-brand-primary/30 flex items-center justify-center">
+                  {language === 'en' ? '🇬🇧' : '🇮🇹'}
+                </span>
+                <span className="ml-2 text-xs text-brand-primary font-semibold">
+                  {t('navbar.language.toggleButton').replace('{lang}', t(`navbar.language.${language === 'en' ? 'it' : 'en'}`))}
+                </span>
+              </button>
               {/* Dashboard Button */}
               <Link 
                 href="/login" 
@@ -111,7 +136,7 @@ export const NavbarMobile = () => {
                 <Button
                   className="w-full justify-between bg-brand-primary hover:bg-brand-primary/90 text-white shadow-md"
                 >
-                  <span>Dashboard</span>
+                  <span>{t('navbar.dashboard')}</span>
                   <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
               </Link>

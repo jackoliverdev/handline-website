@@ -21,6 +21,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { ModalForgotPassword } from "@/components/auth/modal-forgot-password";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from '@/lib/context/language-context';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -36,6 +37,7 @@ export const SignInForm: FC<SignInFormProps> = ({ onShowSignUp }) => {
   const router = useRouter();
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { t } = useLanguage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,11 +82,11 @@ export const SignInForm: FC<SignInFormProps> = ({ onShowSignUp }) => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-foreground">Email Address</FormLabel>
+                <FormLabel className="text-foreground">{t('auth.email')}</FormLabel>
                 <FormControl>
                   <Input 
                     type="email" 
-                    placeholder="name@example.com" 
+                    placeholder={t('auth.emailPlaceholder')} 
                     {...field} 
                     className="bg-background"
                   />
@@ -98,12 +100,12 @@ export const SignInForm: FC<SignInFormProps> = ({ onShowSignUp }) => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-foreground">Password</FormLabel>
+                <FormLabel className="text-foreground">{t('auth.password')}</FormLabel>
                 <div className="relative">
                   <FormControl>
                     <Input 
                       type={showPassword ? "text" : "password"} 
-                      placeholder="••••••••" 
+                      placeholder={t('auth.passwordPlaceholder')} 
                       {...field} 
                       className="bg-background"
                     />
@@ -121,7 +123,7 @@ export const SignInForm: FC<SignInFormProps> = ({ onShowSignUp }) => {
                       <Eye className="h-4 w-4" />
                     )}
                     <span className="sr-only">
-                      {showPassword ? "Hide password" : "Show password"}
+                      {showPassword ? (t('auth.hidePassword') || 'Hide password') : (t('auth.showPassword') || 'Show password')}
                     </span>
                   </Button>
                 </div>
@@ -137,7 +139,7 @@ export const SignInForm: FC<SignInFormProps> = ({ onShowSignUp }) => {
               onClick={() => setIsResetOpen(true)}
               className="px-0 font-normal text-xs text-muted-foreground"
             >
-              Forgot password?
+              {t('auth.forgotPassword')}
             </Button>
           </div>
           <Button 
@@ -147,20 +149,20 @@ export const SignInForm: FC<SignInFormProps> = ({ onShowSignUp }) => {
             size="lg"
           >
             <LogIn className="mr-2 h-4 w-4" /> 
-            Sign In
+            {t('auth.signIn')}
           </Button>
         </form>
       </Form>
       
       <div className="mt-6 text-center text-sm">
         <p className="text-muted-foreground">
-          Not a member?{" "}
+          {t('auth.notAMember')} {" "}
           <Button 
             variant="link" 
             onClick={onShowSignUp}
             className="p-0 font-semibold text-primary hover:text-primary/80"
           >
-            Sign up instead
+            {t('auth.signUpInstead')}
           </Button>
         </p>
       </div>

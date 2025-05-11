@@ -6,10 +6,13 @@ import { Award, ArrowRight, ChevronRight, Shield, Clock, Factory, Mail } from "l
 import Image from "next/image";
 import Link from "next/link";
 import { GlovesModel } from "./3d-model";
+import { useLanguage } from "@/lib/context/language-context";
 
 const SPRING_CONFIG = { stiffness: 100, damping: 30, mass: 1 };
 
 export const Hero = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="relative overflow-visible bg-brand-light dark:bg-background pb-28 sm:pb-32 pt-28 sm:pt-12">
       {/* Decorative Elements */}
@@ -30,7 +33,7 @@ export const Hero = () => {
               <div className="inline-flex items-center rounded-full bg-transparent dark:bg-transparent px-3 py-1 text-xs sm:text-sm border border-[#F28C38] backdrop-blur-sm">
                 <Award className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4 text-[#F28C38]" />
                 <span className="text-brand-dark dark:text-white font-medium font-heading">
-                  40+ Years of Expertise
+                  {t('hero.expertise')}
                 </span>
               </div>
             </motion.div>
@@ -42,10 +45,7 @@ export const Hero = () => {
               transition={{ ...SPRING_CONFIG, delay: 0.1 }}
             >
               <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight font-heading">
-                <span className="text-brand-dark dark:text-white">Your Hands </span>
-                <span className="text-[#F28C38]">
-                  Protected
-                </span>
+                <span className="text-brand-dark dark:text-white">{t('hero.title')}</span>
               </h1>
             </motion.div>
             
@@ -56,8 +56,7 @@ export const Hero = () => {
               transition={{ ...SPRING_CONFIG, delay: 0.2 }}
             >
               <p className="max-w-2xl text-base md:text-lg text-brand-secondary dark:text-gray-300">
-                HandLine Company is an Italian manufacturer specialising in high-performance safety gloves for industrial settings. 
-                Our heat-resistant and cut-resistant gloves provide unmatched protection up to 350°C with precision and comfort.
+                {t('hero.description')}
               </p>
             </motion.div>
             
@@ -75,7 +74,7 @@ export const Hero = () => {
                   className="group flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-[#F28C38] text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:bg-[#F28C38]/90 w-full sm:w-auto text-sm md:text-base h-10 md:h-auto"
                 >
                   <Shield className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span>Explore Products</span>
+                  <span>{t('hero.exploreProducts')}</span>
                   <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </a>
                 {/* Get in Touch Button */}
@@ -84,7 +83,7 @@ export const Hero = () => {
                   className="group flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 border-2 border-brand-primary text-brand-primary dark:text-white dark:border-white hover:text-brand-primary hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 rounded-lg font-medium w-full sm:w-auto text-sm md:text-base h-10 md:h-auto"
                 >
                   <Mail className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span>Get in Touch</span>
+                  <span>{t('hero.getInTouch')}</span>
                   <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-all duration-300 group-hover:translate-x-1" />
                 </Link>
               </motion.div>

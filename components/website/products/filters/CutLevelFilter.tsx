@@ -2,6 +2,7 @@ import { ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatCutLevel } from "@/lib/product-utils";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface CutLevelFilterProps {
   cutLevels: string[];
@@ -18,6 +19,7 @@ export const CutLevelFilter = ({
   isExpanded,
   toggleSection,
 }: CutLevelFilterProps) => {
+  const { t } = useLanguage();
   if (cutLevels.length === 0) return null;
 
   return (
@@ -27,7 +29,7 @@ export const CutLevelFilter = ({
         onClick={() => toggleSection("cutLevel")}
       >
         <h3 className="text-sm font-medium text-brand-dark dark:text-white">
-          Cut Resistance Level
+          {t('products.filters.cutLevel')}
           {selectedCutLevels.length > 0 && (
             <Badge className="ml-2 bg-brand-primary text-white">{selectedCutLevels.length}</Badge>
           )}

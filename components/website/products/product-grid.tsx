@@ -10,6 +10,7 @@ import { SearchX, ChevronDown, ChevronUp, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import { useLanguage } from "@/lib/context/language-context";
 
 // Import utility functions
 import {
@@ -36,6 +37,7 @@ interface ProductGridProps {
 }
 
 export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
+  const { t, language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
@@ -80,32 +82,52 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
   // Number of rows to show initially (2 rows = 8 products)
   const INITIAL_ROWS = 2;
   
-  // Get unique categories from products
+  // Localise all products
+  const localizedProducts = products.map(product => ({
+    ...product,
+    name: product.name_locales?.[language] || product.name,
+    description: product.description_locales?.[language] || product.description,
+    short_description: product.short_description_locales?.[language] || product.short_description,
+    category: product.category_locales?.[language] || product.category,
+    sub_category: product.sub_category_locales?.[language] || product.sub_category,
+    features: product.features_locales?.[language] || product.features,
+    applications: product.applications_locales?.[language] || product.applications,
+    industries: product.industries_locales?.[language] || product.industries,
+  }));
+
+  // Get unique categories from localised products
   const uniqueCategories = Array.from(
-    new Set(products.map((product) => product.category || "Uncategorized"))
-  );
-  
+    new Set(localizedProducts.map((product) => product.category || t('products.filters.uncategorised')))
+  ).filter((cat): cat is string => Boolean(cat));
+
   // Get unique subcategories based on selected category
-  const uniqueSubCategories = getUniqueSubCategories(products, selectedCategory);
-  
+  const uniqueSubCategories = Array.from(
+    new Set(
+      localizedProducts
+        .filter(p => !selectedCategory || selectedCategory === "all" || p.category === selectedCategory)
+        .map(p => p.sub_category)
+        .filter((sub): sub is string => Boolean(sub))
+    )
+  );
+
   // Get unique temperature ratings
-  const uniqueTempRatings = getUniqueTempRatings(products);
-  
+  const uniqueTempRatings = getUniqueTempRatings(localizedProducts);
+
   // Get unique cut resistance levels
-  const uniqueCutLevels = getUniqueCutLevels(products);
-  
+  const uniqueCutLevels = getUniqueCutLevels(localizedProducts);
+
   // Get unique industries
-  const uniqueIndustries = getUniqueIndustries(products);
-  
-  // Define preferred category order
+  const uniqueIndustries = getUniqueIndustries(localizedProducts);
+
+  // Define preferred category order (localised)
   const preferredOrder = [
-    "Heat Resistant Gloves",
-    "Cut Resistant Gloves",
-    "General Purpose Gloves",
-    "Industrial Swabs",
-    "Respiratory Protection"
+    t("products.filters.heatResistantGloves") || "Heat Resistant Gloves",
+    t("products.filters.cutResistantGloves") || "Cut Resistant Gloves",
+    t("products.filters.generalPurposeGloves") || "General Purpose Gloves",
+    t("products.filters.industrialSwabs") || "Industrial Swabs",
+    t("products.filters.respiratoryProtection") || "Respiratory Protection"
   ];
-  
+
   // Sort categories based on preferred order
   const categories = sortCategoriesByPreference(uniqueCategories, preferredOrder);
   
@@ -164,7 +186,7 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
   };
   
   // Filter products by all criteria
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = localizedProducts.filter((product) => {
     // Match search query
     const matchesSearch = 
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -175,7 +197,7 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
     const matchesCategory = 
       !selectedCategory || 
       selectedCategory === "all" || 
-      (product.category || "Uncategorized") === selectedCategory;
+      (product.category || t('products.filters.uncategorised')) === selectedCategory;
     
     // Match subcategory
     const matchesSubCategory =
@@ -214,8 +236,8 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
   // Sort products based on selected option and category order
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     // First sort by category according to preferred order
-    const categoryA = a.category || "Uncategorized";
-    const categoryB = b.category || "Uncategorized";
+    const categoryA = a.category || t('products.filters.uncategorised');
+    const categoryB = b.category || t('products.filters.uncategorised');
     
     const indexA = preferredOrder.indexOf(categoryA);
     const indexB = preferredOrder.indexOf(categoryB);
@@ -314,14 +336,16 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
 
   return (
     <div className={className}>
+      <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl text-brand-dark dark:text-white font-heading">
+        {t('products.browseTitle')}
+      </h2>
       {/* Desktop-only left sidebar filters */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-[280px,1fr]">
         <div className="hidden md:block">
           <div className="sticky top-24 border border-brand-primary/10 dark:border-brand-primary/20 rounded-lg overflow-hidden">
             <div className="bg-[#F5EFE0]/80 dark:bg-transparent backdrop-blur-sm dark:backdrop-blur-none p-4">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-brand-dark dark:text-white">Filters</h2>
-                {/* Desktop sidebar Clear All Filters button */}
+                <h2 className="text-xl font-semibold text-brand-dark dark:text-white">{t('products.filters.title')}</h2>
                 {activeFiltersCount > 0 && (
                   <Button 
                     variant="outline" 
@@ -330,7 +354,7 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
                     onClick={clearFilters}
                   >
                     <X className="mr-1.5 h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
-                    Clear All Filters
+                    {t('products.filters.clearAll')}
                   </Button>
                 )}
               </div>
@@ -391,7 +415,7 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
             {/* Search */}
             <div className="relative">
               <Input
-                placeholder="Search products..."
+                placeholder={t('products.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full border-brand-primary/20 focus-visible:ring-brand-primary bg-[#F5EFE0]/60 dark:bg-transparent dark:border-brand-primary/20 placeholder:text-brand-secondary/70 dark:placeholder:text-gray-500"
@@ -456,13 +480,13 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
             <div>
               <Select value={sortOption} onValueChange={setSortOption}>
                 <SelectTrigger className="border-brand-primary/20 focus:ring-brand-primary bg-[#F5EFE0]/60 dark:bg-transparent dark:border-brand-primary/20 hover:bg-white/80 dark:hover:bg-gray-800/40 transition-all duration-300 group">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t('products.sortOptions.featured')} />
                 </SelectTrigger>
                 <SelectContent className="border-brand-primary/20 bg-[#F5EFE0]/95 dark:bg-black/95 backdrop-blur-md">
-                  <SelectItem value="featured" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">Featured</SelectItem>
-                  <SelectItem value="newest" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">Newest</SelectItem>
-                  <SelectItem value="name-asc" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">Name: A to Z</SelectItem>
-                  <SelectItem value="name-desc" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">Name: Z to A</SelectItem>
+                  <SelectItem value="featured" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">{t('products.sortOptions.featured')}</SelectItem>
+                  <SelectItem value="newest" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">{t('products.sortOptions.newest')}</SelectItem>
+                  <SelectItem value="name-asc" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">{t('products.sortOptions.name-asc')}</SelectItem>
+                  <SelectItem value="name-desc" className="focus:bg-brand-primary/10 focus:text-brand-primary transition-colors duration-200">{t('products.sortOptions.name-desc')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -486,11 +510,13 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
           {/* Results count */}
           <div className="mb-6">
             <p className="text-sm text-brand-secondary dark:text-gray-400">
-              Showing {isExpanded ? sortedProducts.length : Math.min(displayedProducts.length, initialProductsCount)} of {sortedProducts.length} products
+              {t('products.results.showing')
+                .replace('{current}', String(isExpanded ? localizedProducts.length : Math.min(displayedProducts.length, initialProductsCount)))
+                .replace('{total}', String(localizedProducts.length))}
             </p>
           </div>
           
-          {sortedProducts.length > 0 ? (
+          {localizedProducts.length > 0 ? (
             <div className="space-y-8">
               <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {displayedProducts.map((product) => (
@@ -516,11 +542,11 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
                   >
                     {isExpanded ? (
                       <span className="flex items-center">
-                        Show Less <ChevronUp className="ml-2 h-5 w-5" />
+                        {t('products.results.showLess')} <ChevronUp className="ml-2 h-5 w-5" />
                       </span>
                     ) : (
                       <span className="flex items-center">
-                        See More Products <ChevronDown className="ml-2 h-5 w-5" />
+                        {t('products.results.seeMore')} <ChevronDown className="ml-2 h-5 w-5" />
                       </span>
                     )}
                   </Button>
@@ -530,18 +556,17 @@ export const ProductGrid = ({ products, className = "" }: ProductGridProps) => {
           ) : (
             <div className="flex flex-col items-center justify-center py-16 border border-brand-primary/10 dark:border-brand-primary/20 rounded-lg bg-brand-light dark:bg-gray-800/20">
               <SearchX className="mb-4 h-16 w-16 text-brand-primary/50" />
-              <h3 className="mb-2 text-xl font-semibold text-brand-dark dark:text-white">No products found</h3>
+              <h3 className="mb-2 text-xl font-semibold text-brand-dark dark:text-white">{t('products.results.noResults')}</h3>
               <p className="text-center text-brand-secondary dark:text-gray-400 max-w-md">
-                We couldn't find any products matching your search criteria.
+                {t('products.results.noResultsDescription')}
               </p>
-              {/* No products found Clear Filters button */}
               <Button 
                 variant="outline" 
                 className="mt-4 border-brand-primary/30 text-brand-primary hover:bg-brand-primary/10 hover:border-brand-primary hover:text-black dark:hover:text-white dark:hover:bg-brand-primary/5 transition-all duration-300 group" 
                 onClick={clearFilters}
               >
                 <X className="mr-1.5 h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
-                Clear Filters
+                {t('products.results.clearFilters')}
               </Button>
             </div>
           )}

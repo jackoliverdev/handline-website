@@ -4,6 +4,7 @@ import React from "react";
 import { Shield, Cpu, Users, Star, Eye, Check, Target } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface Value {
   title: string;
@@ -11,40 +12,40 @@ interface Value {
   icon: React.ReactNode;
 }
 
-const values: Value[] = [
-  {
-    title: "Safety First",
-    description: "We believe that safety should never be compromised. Every product we design prioritises protection above all else.",
-    icon: <Shield className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    title: "Innovation",
-    description: "We continuously push the boundaries of what's possible in hand protection through research and innovation.",
-    icon: <Cpu className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    title: "Customer Focus",
-    description: "We listen to our clients' needs and develop solutions that address their specific safety challenges.",
-    icon: <Users className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    title: "Quality Excellence",
-    description: "Our rigorous quality control ensures that every product meets the highest standards of durability and performance.",
-    icon: <Star className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    title: "Design Clarity",
-    description: "We believe in clear, purposeful design that enhances function while providing intuitive user experience.",
-    icon: <Eye className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    title: "Compliance",
-    description: "Our products meet or exceed all relevant safety standards and certifications across global markets.",
-    icon: <Check className="h-8 w-8 text-brand-primary" />,
-  },
-];
-
 export const MissionValues = () => {
+  const { t } = useLanguage();
+  const values = [
+    {
+      title: t('about.values.safety.title'),
+      description: t('about.values.safety.description'),
+      icon: <Shield className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      title: t('about.values.innovation.title'),
+      description: t('about.values.innovation.description'),
+      icon: <Cpu className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      title: t('about.values.customer.title'),
+      description: t('about.values.customer.description'),
+      icon: <Users className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      title: t('about.values.quality.title'),
+      description: t('about.values.quality.description'),
+      icon: <Star className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      title: t('about.values.design.title'),
+      description: t('about.values.design.description'),
+      icon: <Eye className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      title: t('about.values.compliance.title'),
+      description: t('about.values.compliance.description'),
+      icon: <Check className="h-8 w-8 text-brand-primary" />,
+    },
+  ];
   return (
     <section id="mission-values" className="py-16 bg-[#F5EFE0]/80 dark:bg-transparent">
       <div className="container">
@@ -52,13 +53,12 @@ export const MissionValues = () => {
         <div className="mb-12">
           <div className="text-center mb-8">
             <Badge className="mb-2 bg-brand-primary/10 text-brand-primary border-brand-primary/20">
-              Our Mission
+              {t('about.mission.badge')}
             </Badge>
             <h2 className="text-3xl font-bold text-brand-dark dark:text-white mb-3">
-              Why We Exist
+              {t('about.mission.heading')}
             </h2>
           </div>
-          
           <Card className="bg-[#F5EFE0]/80 dark:bg-transparent border-brand-primary/10 dark:border-brand-primary/20 shadow-sm max-w-4xl mx-auto">
             <CardContent className="p-6 text-center">
               <div className="flex justify-center mb-4">
@@ -67,33 +67,27 @@ export const MissionValues = () => {
                 </div>
               </div>
               <p className="text-lg text-brand-secondary dark:text-gray-300 italic mb-3">
-                "To protect the hands that build our world through innovative safety solutions that combine
-                uncompromising protection, exceptional comfort, and Italian design excellence."
+                {t('about.mission.statement')}
               </p>
               <p className="text-sm text-brand-secondary dark:text-gray-300 max-w-3xl mx-auto">
-                At HandLine, we're committed to developing products that not only meet but exceed safety standards,
-                whilst maintaining the dexterity and comfort essential for workers across all industries.
-                Our designs balance functionality with aesthetics, creating safety equipment that 
-                people want to wear.
+                {t('about.mission.description')}
               </p>
             </CardContent>
           </Card>
         </div>
-        
         {/* Values */}
         <div>
           <div className="text-center mb-8">
             <Badge className="mb-2 bg-brand-primary/10 text-brand-primary border-brand-primary/20">
-              Our Values
+              {t('about.values.badge')}
             </Badge>
             <h2 className="text-3xl font-bold text-brand-dark dark:text-white mb-3">
-              Principles That Guide Us
+              {t('about.values.heading')}
             </h2>
             <p className="text-base text-brand-secondary dark:text-gray-300 max-w-2xl mx-auto">
-              These core principles guide everything we do at HandLine, from product design to customer service.
+              {t('about.values.description')}
             </p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {values.map((value, index) => (
               <Card 

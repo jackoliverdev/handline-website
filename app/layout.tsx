@@ -6,6 +6,7 @@ import { MyFirebaseProvider } from "@/components/firebase-providers";
 import { RoleProvider } from "@/components/role-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ReactNode } from "react";
+import { LanguageProvider } from "@/lib/context/language-context";
 
 // Load Montserrat font for headings (weights: 600, 700)
 const montserrat = Montserrat({
@@ -44,12 +45,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         montserrat.variable,
         "font-sans overflow-x-hidden w-full max-w-[100vw] bg-[#F5EFE0] dark:bg-[#121212]"
       )}>
-        <MyFirebaseProvider>
-          <RoleProvider>
-            {children}
-            <Toaster />
-          </RoleProvider>
-        </MyFirebaseProvider>
+        <LanguageProvider>
+          <MyFirebaseProvider>
+            <RoleProvider>
+              {children}
+              <Toaster />
+            </RoleProvider>
+          </MyFirebaseProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

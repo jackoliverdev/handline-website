@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import type { Language } from './context/language-context';
 
 export interface Product {
   id: string;
@@ -28,6 +29,29 @@ export interface Product {
   related_product_id_4?: string | null;
   created_at: string;
   updated_at: string;
+  // Locales fields (optional for typing)
+  name_locales?: Record<string, string>;
+  description_locales?: Record<string, string>;
+  short_description_locales?: Record<string, string>;
+  category_locales?: Record<string, string>;
+  sub_category_locales?: Record<string, string>;
+  features_locales?: Record<string, string[]>;
+  applications_locales?: Record<string, string[]>;
+  industries_locales?: Record<string, string[]>;
+}
+
+export function localiseProduct(product: Product, language: Language): Product {
+  return {
+    ...product,
+    name: product.name_locales?.[language] || product.name_locales?.en || product.name,
+    description: product.description_locales?.[language] || product.description_locales?.en || product.description,
+    short_description: product.short_description_locales?.[language] || product.short_description_locales?.en || product.short_description,
+    category: product.category_locales?.[language] || product.category_locales?.en || product.category,
+    sub_category: product.sub_category_locales?.[language] || product.sub_category_locales?.en || product.sub_category,
+    features: product.features_locales?.[language] || product.features_locales?.en || product.features,
+    applications: product.applications_locales?.[language] || product.applications_locales?.en || product.applications,
+    industries: product.industries_locales?.[language] || product.industries_locales?.en || product.industries,
+  };
 }
 
 /**
@@ -70,31 +94,27 @@ export async function getAllProducts(): Promise<{ products: Product[] }> {
 /**
  * Fetch featured products from Supabase
  */
-export async function getFeaturedProducts(): Promise<{ products: Product[] }> {
+export async function getFeaturedProducts(language: Language): Promise<{ products: Product[] }> {
   try {
     console.log('Fetching featured products from Supabase...');
-    
     const { data, error } = await supabase
       .from('products')
       .select('*')
       .eq('is_featured', true)
       .order('order_priority', { ascending: false })
       .order('created_at', { ascending: false });
-    
     if (error) {
       console.error('Error fetching featured products:', error);
       return { products: [] };
     }
-
-    // Parse JSONB fields
-    const products = data.map(product => ({
+    // Parse JSONB fields and localise
+    const products = data.map(product => localiseProduct({
       ...product,
       features: Array.isArray(product.features) ? product.features : [],
       applications: Array.isArray(product.applications) ? product.applications : [],
       industries: Array.isArray(product.industries) ? product.industries : [],
       additional_images: Array.isArray(product.additional_images) ? product.additional_images : []
-    }));
-    
+    }, language));
     console.log(`Fetched ${products.length} featured products`);
     return { products };
   } catch (error) {

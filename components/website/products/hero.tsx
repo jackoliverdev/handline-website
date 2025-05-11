@@ -5,17 +5,19 @@ import { ShoppingBag, Shield, Filter, ChevronRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/lib/context/language-context";
 
 const SPRING_CONFIG = { stiffness: 100, damping: 30, mass: 1 };
 
-const stats = [
-  { value: '350°C', label: 'Heat Resistance' },
-  { value: 'Level 5', label: 'Cut Resistance' },
-  { value: 'CE', label: 'Certified' },
-  { value: '40+', label: 'Years Experience' },
-];
-
 export const ProductsHero = () => {
+  const { t } = useLanguage();
+  const stats = [
+    { value: "350°C", label: t("productsHero.stats.heat") },
+    { value: t("productsHero.stats.cutValue"), label: t("productsHero.stats.cut") },
+    { value: "CE", label: t("productsHero.stats.certified") },
+    { value: "40+", label: t("productsHero.stats.years") },
+  ];
+
   return (
     <section className="relative overflow-hidden bg-brand-light dark:bg-background pt-28 pb-6 md:pt-32 md:pb-16">
       {/* Decorative Elements */}
@@ -35,7 +37,7 @@ export const ProductsHero = () => {
             <div className="inline-flex items-center rounded-full border border-brand-primary px-3 py-1 md:px-4 md:py-1.5 text-xs md:text-sm backdrop-blur-sm">
               <Shield className="mr-1.5 h-3 w-3 md:h-4 md:w-4 text-brand-primary" />
               <span className="text-brand-dark dark:text-white font-medium">
-                Industrial Safety
+                {t("productsHero.badge")}
               </span>
             </div>
           </motion.div>
@@ -48,7 +50,7 @@ export const ProductsHero = () => {
             className="relative mb-4 md:mb-6"
           >
             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-brand-dark dark:text-white font-heading">
-              Safety <span className="text-brand-primary">Gloves</span>
+              {t("productsHero.heading")} <span className="text-brand-primary">{t("productsHero.headingAccent")}</span>
             </h1>
           </motion.div>
 
@@ -60,7 +62,7 @@ export const ProductsHero = () => {
             className="mb-6 md:mb-10"
           >
             <p className="max-w-2xl text-base md:text-lg text-brand-secondary dark:text-gray-300">
-              Explore our comprehensive range of high-performance industrial safety gloves, designed to provide superior protection against heat, cuts, and other workplace hazards.
+              {t("productsHero.description")}
             </p>
           </motion.div>
 
@@ -93,7 +95,7 @@ export const ProductsHero = () => {
             >
               <Link href="#product-categories" className="flex items-center justify-center gap-1.5 md:gap-2">
                 <ShoppingBag className="h-4 w-4 md:h-5 md:w-5" />
-                <span>Browse Products</span>
+                <span>{t("productsHero.browseProducts")}</span>
                 <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
@@ -105,7 +107,7 @@ export const ProductsHero = () => {
             >
               <Link href="/contact" className="flex items-center justify-center gap-1.5 md:gap-2">
                 <Mail className="h-4 w-4 md:h-5 md:w-5" />
-                <span>Get in Touch</span>
+                <span>{t("productsHero.getInTouch")}</span>
                 <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>

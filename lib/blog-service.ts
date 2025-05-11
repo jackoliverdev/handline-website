@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { v4 as uuidv4 } from 'uuid';
+import type { Language } from './context/language-context';
 
 export interface BlogPost {
   id?: string;
@@ -14,6 +15,10 @@ export interface BlogPost {
   is_published?: boolean;
   created_at?: string;
   updated_at?: string;
+  title_locales?: { [lang: string]: string };
+  summary_locales?: { [lang: string]: string };
+  content_locales?: { [lang: string]: string };
+  tags_locales?: { [lang: string]: string[] };
 }
 
 /**
@@ -86,16 +91,15 @@ export async function getBlogById(id: string) {
 /**
  * Get a blog post by slug
  */
-export async function getBlogBySlug(slug: string) {
+export async function getBlogBySlug(slug: string, language: Language = 'en') {
   try {
     const { data, error } = await supabase
       .from('blog_posts')
       .select('*')
       .eq('slug', slug)
       .single();
-    
     if (error) throw error;
-    return data;
+    return localiseBlog(data, language);
   } catch (error) {
     console.error('Error getting blog post by slug:', error);
     throw error;
@@ -217,7 +221,7 @@ export async function toggleBlogPublished(id: string) {
 /**
  * Get related blog posts by tags
  */
-export async function getRelatedBlogs(excludeId: string, tags: string[], limit: number = 3) {
+export async function getRelatedBlogs(excludeId: string, tags: string[], limit: number = 3, language: Language = 'en') {
   try {
     const { data, error } = await supabase
       .from('blog_posts')
@@ -226,9 +230,8 @@ export async function getRelatedBlogs(excludeId: string, tags: string[], limit: 
       .not('id', 'eq', excludeId)
       .contains('tags', tags)
       .limit(limit);
-    
     if (error) throw error;
-    return data;
+    return (data || []).map(post => localiseBlog(post, language));
   } catch (error) {
     console.error('Error getting related blogs:', error);
     throw error;
@@ -288,4 +291,14 @@ function createSlug(title: string): string {
     .replace(/\s+/g, '-')    // Replace spaces with hyphens
     .replace(/--+/g, '-')    // Replace multiple hyphens with single hyphen
     .trim();
+}
+
+export function localiseBlog(post: BlogPost, language: Language): BlogPost {
+  return {
+    ...post,
+    title: post.title_locales?.[language] || post.title_locales?.en || post.title,
+    summary: post.summary_locales?.[language] || post.summary_locales?.en || post.summary,
+    content: post.content_locales?.[language] || post.content_locales?.en || post.content,
+    tags: post.tags_locales?.[language] || post.tags_locales?.en || post.tags || [],
+  };
 } 

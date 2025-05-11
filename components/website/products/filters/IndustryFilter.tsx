@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface IndustryFilterProps {
   industries: string[];
@@ -17,6 +18,7 @@ export const IndustryFilter = ({
   isExpanded,
   toggleSection,
 }: IndustryFilterProps) => {
+  const { t } = useLanguage();
   if (industries.length === 0) return null;
 
   return (
@@ -26,7 +28,7 @@ export const IndustryFilter = ({
         onClick={() => toggleSection("industries")}
       >
         <h3 className="text-sm font-medium text-brand-dark dark:text-white">
-          Industries
+          {t('products.filters.industries')}
           {selectedIndustries.length > 0 && (
             <Badge className="ml-2 bg-brand-primary text-white">{selectedIndustries.length}</Badge>
           )}

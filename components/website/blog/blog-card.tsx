@@ -8,22 +8,25 @@ import Link from 'next/link';
 import type { BlogPost } from '@/lib/blog-service';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/lib/context/language-context';
 
 interface BlogCardProps {
   post: BlogPost;
   index: number;
+  language: string;
 }
 
-export function BlogCard({ post, index }: BlogCardProps) {
+export function BlogCard({ post, index, language }: BlogCardProps) {
+  const { t } = useLanguage();
   // Calculate the reading time (approximately 200 words per minute)
-  const wordCount = post.content.split(/\s+/).length;
+  const wordCount = (post.content_locales && post.content_locales[language] ? post.content_locales[language] : post.content).split(/\s+/).length;
   const readingTime = Math.ceil(wordCount / 200);
   
   // Format the date
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-GB', {
+    return new Intl.DateTimeFormat(language === 'it' ? 'it-IT' : 'en-GB', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -41,6 +44,11 @@ export function BlogCard({ post, index }: BlogCardProps) {
   const isNew = post.published_at 
     ? new Date(post.published_at).getTime() > Date.now() - (14 * 24 * 60 * 60 * 1000)
     : false;
+
+  // Localised fields
+  const title = (post.title_locales && post.title_locales[language]) || post.title;
+  const summary = (post.summary_locales && post.summary_locales[language]) || post.summary;
+  const tags = (post.tags_locales && post.tags_locales[language]) || post.tags || [];
 
   return (
     <motion.div
@@ -66,7 +74,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
         <div className="relative aspect-[16/9] w-full overflow-hidden bg-black dark:bg-black">
           <Image
             src={imageUrl}
-            alt={post.title}
+            alt={title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -77,16 +85,16 @@ export function BlogCard({ post, index }: BlogCardProps) {
       {/* Blog Details */}
       <div className="p-4">
         <div className="mb-2 flex items-center justify-between">
-          {post.tags && post.tags.length > 0 && (
+          {tags && tags.length > 0 && (
             <div className="flex flex-wrap gap-1">
-              {post.tags.slice(0, 2).map((tag, idx) => (
+              {tags.slice(0, 2).map((tag, idx) => (
                 <Badge key={idx} variant="outline" className="text-xs border-brand-primary/30 text-brand-secondary dark:text-gray-300">
                   {tag}
                 </Badge>
               ))}
-              {post.tags.length > 2 && (
+              {tags.length > 2 && (
                 <Badge variant="outline" className="text-xs border-brand-primary/30 text-brand-secondary dark:text-gray-300">
-                  +{post.tags.length - 2}
+                  +{tags.length - 2}
                 </Badge>
               )}
             </div>
@@ -95,12 +103,12 @@ export function BlogCard({ post, index }: BlogCardProps) {
         
         <Link href={`/blog/${post.slug}`}>
           <h3 className="mb-2 line-clamp-1 text-lg font-bold text-brand-dark hover:text-brand-primary dark:text-white dark:hover:text-brand-primary">
-            {post.title}
+            {title}
           </h3>
         </Link>
         
         <p className="mb-3 text-sm text-brand-secondary dark:text-gray-300 line-clamp-2">
-          {post.summary}
+          {summary}
         </p>
         
         {/* Meta info */}
@@ -124,7 +132,7 @@ export function BlogCard({ post, index }: BlogCardProps) {
             asChild
           >
             <Link href={`/blog/${post.slug}`}>
-              <span>Read Article</span>
+              <span>{t('blog.readArticle')}</span>
               <ArrowRight className="h-4 w-4 ml-1" />
             </Link>
           </Button>

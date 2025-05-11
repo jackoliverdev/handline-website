@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { v4 as uuidv4 } from 'uuid';
+import type { Language } from './context/language-context';
 
 export interface Industry {
   id: string;
@@ -11,12 +12,28 @@ export interface Industry {
   created_at?: string;
   updated_at?: string;
   slug?: string; // Derived from industry_name
+  // Locale fields
+  industry_name_locales?: Record<string, string>;
+  description_locales?: Record<string, string>;
+  content_locales?: Record<string, string>;
+  features_locales?: Record<string, string[]>;
+  features?: string[];
+}
+
+export function localiseIndustry(industry: Industry, language: Language): Industry {
+  return {
+    ...industry,
+    industry_name: industry.industry_name_locales?.[language] || industry.industry_name_locales?.en || industry.industry_name,
+    description: industry.description_locales?.[language] || industry.description_locales?.en || industry.description,
+    content: industry.content_locales?.[language] || industry.content_locales?.en || industry.content,
+    features: industry.features_locales?.[language] || industry.features_locales?.en || [],
+  };
 }
 
 /**
  * Get all industries
  */
-export async function getAllIndustries() {
+export async function getAllIndustries(language: Language) {
   try {
     const { data, error, count } = await supabase
       .from('industry_solutions')
@@ -28,11 +45,11 @@ export async function getAllIndustries() {
       throw error;
     }
     
-    // Transform data to include slugs
-    const industriesWithSlugs = data.map(industry => ({
+    // Transform data to include slugs and localise content
+    const industriesWithSlugs = data.map(industry => localiseIndustry({
       ...industry,
       slug: createSlug(industry.industry_name)
-    }));
+    }, language));
     
     return { data: industriesWithSlugs, count };
   } catch (error) {
@@ -44,7 +61,7 @@ export async function getAllIndustries() {
 /**
  * Get an industry by ID
  */
-export async function getIndustryById(id: string) {
+export async function getIndustryById(id: string, language: Language) {
   try {
     const { data, error } = await supabase
       .from('industry_solutions')
@@ -53,7 +70,7 @@ export async function getIndustryById(id: string) {
       .single();
     
     if (error) throw error;
-    return data;
+    return localiseIndustry(data, language);
   } catch (error) {
     console.error('Error getting industry by ID:', error);
     throw error;
@@ -63,7 +80,7 @@ export async function getIndustryById(id: string) {
 /**
  * Get an industry by slug
  */
-export async function getIndustryBySlug(slug: string) {
+export async function getIndustryBySlug(slug: string, language: Language) {
   try {
     // First fetch all industries
     const { data, error } = await supabase
@@ -77,11 +94,11 @@ export async function getIndustryBySlug(slug: string) {
     
     if (!industry) return null;
     
-    // Add slug to the returned object
-    return {
+    // Add slug to the returned object and localise
+    return localiseIndustry({
       ...industry,
       slug: createSlug(industry.industry_name)
-    };
+    }, language);
   } catch (error) {
     console.error('Error getting industry by slug:', error);
     throw error;

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Flame, Scissors, ArrowRight, X } from "lucide-react";
 import { Product } from "@/lib/products-service";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface ProductPreviewModalProps {
   product: Product;
@@ -20,6 +21,7 @@ export const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { t } = useLanguage();
   // Encode the product name for use in URLs
   const encodedProductName = encodeURIComponent(product.name);
   
@@ -137,7 +139,7 @@ export const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({
 
             {product.industries && product.industries.length > 0 && (
               <div>
-                <h4 className="text-xs font-medium text-brand-dark dark:text-white mb-1">Industries:</h4>
+                <h4 className="text-xs font-medium text-brand-dark dark:text-white mb-1">{t('products.industries')}</h4>
                 <div className="flex flex-wrap gap-1">
                   {product.industries.map((industry) => (
                     <Badge key={industry} variant="secondary" className="text-[10px] sm:text-xs">
@@ -150,13 +152,13 @@ export const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({
 
             {product.features && product.features.length > 0 && (
               <div>
-                <h4 className="text-xs font-medium text-brand-dark dark:text-white mb-0.5 sm:mb-1">Key Features:</h4>
+                <h4 className="text-xs font-medium text-brand-dark dark:text-white mb-0.5 sm:mb-1">{t('products.keyFeatures')}</h4>
                 <ul className="list-disc list-inside space-y-0.5 sm:space-y-1 text-xs sm:text-sm text-brand-secondary dark:text-gray-300">
                   {product.features.slice(0, 2).map((feature, index) => (
                     <li key={index} className="line-clamp-1">{feature}</li>
                   ))}
                   {product.features.length > 2 && (
-                    <li className="text-brand-primary text-xs">+{product.features.length - 2} more</li>
+                    <li className="text-brand-primary text-xs">{t('products.moreFeatures').replace('{{count}}', String(product.features.length - 2))}</li>
                   )}
                 </ul>
               </div>
@@ -171,7 +173,7 @@ export const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({
             asChild
           >
             <Link href={`/products/${encodedProductName}`} className="flex items-center justify-center">
-              View Full Details
+              {t('products.viewFullDetails')}
               <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </Button>

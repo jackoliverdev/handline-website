@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Flame, Scissors, ArrowRight, Eye } from "lucide-react";
 import { Product } from "@/lib/products-service";
 import { ProductPreviewModal } from "./product-preview-modal";
+import { useLanguage } from "@/lib/context/language-context";
 
 export interface ProductCardProps {
   product: Product;
@@ -18,6 +19,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClic
   // Check if the product is new (created within the last 30 days)
   const isNew = new Date(product.created_at).getTime() > Date.now() - (30 * 24 * 60 * 60 * 1000);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const { t } = useLanguage();
   
   const handlePreviewClick = () => {
     setShowPreviewModal(true);
@@ -37,14 +39,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClic
         {/* Out of Stock Badge */}
         {product.out_of_stock && (
           <Badge className="bg-red-500 text-white text-xs">
-            Out of Stock
+            {t('products.outOfStock')}
           </Badge>
         )}
         
         {/* New Badge */}
         {isNew && (
           <Badge className="bg-brand-primary text-white text-xs">
-            New
+            {t('products.new')}
           </Badge>
         )}
       </div>
@@ -124,7 +126,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClic
             onClick={handlePreviewClick}
           >
             <Eye className="hidden sm:inline-block sm:mr-1.5 sm:h-4 sm:w-4" />
-            Preview
+            {t('products.preview')}
           </Button>
           
           <Button 
@@ -134,7 +136,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClic
             asChild
           >
             <Link href={`/products/${encodedProductName}`} className="flex items-center justify-center w-full">
-              Details
+              {t('products.details')}
               <ArrowRight className="hidden sm:inline-block sm:ml-1.5 sm:h-4 sm:w-4 sm:transition-transform sm:duration-300 sm:group-hover:translate-x-1" />
             </Link>
           </Button>

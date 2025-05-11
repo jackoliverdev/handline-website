@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface CategoryFilterProps {
   categories: string[];
@@ -15,6 +16,7 @@ export const CategoryFilter = ({
   isExpanded,
   toggleSection,
 }: CategoryFilterProps) => {
+  const { t } = useLanguage();
   return (
     <div className="border-b border-brand-primary/10 dark:border-brand-primary/20 pb-4">
       <button
@@ -23,7 +25,7 @@ export const CategoryFilter = ({
         aria-controls="category-content"
         aria-expanded={isExpanded}
       >
-        <h3 className="text-sm font-medium text-brand-dark dark:text-white">Category</h3>
+        <h3 className="text-sm font-medium text-brand-dark dark:text-white">{t('products.filters.category')}</h3>
         <ChevronDown
           className={`h-4 w-4 text-brand-primary transition-transform ${
             isExpanded ? "rotate-180" : ""
@@ -41,7 +43,7 @@ export const CategoryFilter = ({
             }`}
             onClick={() => setSelectedCategory("all")}
           >
-            All Categories
+            {t('products.filters.allCategories')}
           </div>
           {categories.map((category) => (
             <div

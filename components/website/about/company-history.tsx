@@ -4,6 +4,7 @@ import React from "react";
 import { CalendarDays, Flag, Award, Globe, Lightbulb, Cpu } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface Milestone {
   year: string;
@@ -12,59 +13,59 @@ interface Milestone {
   icon: React.ReactNode;
 }
 
-const milestones: Milestone[] = [
-  {
-    year: "1981",
-    title: "Foundation",
-    description: "HandLine was founded in Milan, Italy with a vision to create superior safety gloves for industrial workers.",
-    icon: <Flag className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    year: "1992",
-    title: "First Patent",
-    description: "Developed and patented our first cut-resistant glove technology, setting new industry standards for protection.",
-    icon: <Award className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    year: "2000",
-    title: "International Expansion",
-    description: "Expanded operations to serve clients across Europe, with distribution networks in 12 countries.",
-    icon: <Globe className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    year: "2008",
-    title: "Thermal Technology",
-    description: "Introduced advanced thermal protection technology, revolutionising safety in extreme temperature environments.",
-    icon: <Lightbulb className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    year: "2015",
-    title: "Sustainability Initiative",
-    description: "Launched eco-friendly production processes and sustainable materials for our premium glove lines.",
-    icon: <Cpu className="h-8 w-8 text-brand-primary" />,
-  },
-  {
-    year: "2023",
-    title: "Digital Transformation",
-    description: "Implemented Industry 4.0 manufacturing solutions and launched a comprehensive digital product catalogue.",
-    icon: <Cpu className="h-8 w-8 text-brand-primary" />,
-  },
-];
-
 export const CompanyHistory = () => {
+  const { t } = useLanguage();
+  const milestones = [
+    {
+      year: "1981",
+      title: t('about.history.1981.title'),
+      description: t('about.history.1981.description'),
+      icon: <Flag className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      year: "1992",
+      title: t('about.history.1992.title'),
+      description: t('about.history.1992.description'),
+      icon: <Award className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      year: "2000",
+      title: t('about.history.2000.title'),
+      description: t('about.history.2000.description'),
+      icon: <Globe className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      year: "2008",
+      title: t('about.history.2008.title'),
+      description: t('about.history.2008.description'),
+      icon: <Lightbulb className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      year: "2015",
+      title: t('about.history.2015.title'),
+      description: t('about.history.2015.description'),
+      icon: <Cpu className="h-8 w-8 text-brand-primary" />,
+    },
+    {
+      year: "2023",
+      title: t('about.history.2023.title'),
+      description: t('about.history.2023.description'),
+      icon: <Cpu className="h-8 w-8 text-brand-primary" />,
+    },
+  ];
+
   return (
     <section id="our-story" className="py-16 bg-[#F5EFE0]/80 dark:bg-transparent">
       <div className="container">
         <div className="text-center mb-10">
           <Badge className="mb-2 bg-brand-primary/10 text-brand-primary border-brand-primary/20">
-            Our Journey
+            {t('about.history.badge')}
           </Badge>
           <h2 className="text-3xl font-bold text-brand-dark dark:text-white mb-4">
-            HandLine Through the Years
+            {t('about.history.heading')}
           </h2>
           <p className="text-lg text-brand-secondary dark:text-gray-300 max-w-2xl mx-auto">
-            From our beginnings in Milan to becoming a leading safety equipment manufacturer, 
-            discover key moments that shaped our company.
+            {t('about.history.description')}
           </p>
         </div>
 
