@@ -5,9 +5,11 @@ import { Mail, Phone, MapPin, ArrowRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "@/lib/context/language-context";
 
 export function Footer() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   
   // Don't render the footer on dashboard routes
   if (pathname?.startsWith('/dashboard')) {
@@ -35,25 +37,25 @@ export function Footer() {
               <span className="text-lg sm:text-xl font-bold text-brand-dark dark:text-white">HandLine Company</span>
             </div>
             <p className="text-sm sm:text-base text-brand-secondary dark:text-gray-300 max-w-md">
-              Italian manufacturer specialising in high-performance safety gloves for industrial environments. Protecting hands with innovative solutions since 1982.
+              {t('footer.companyDescription')}
             </p>
             <div className="space-y-2 sm:space-y-3">
               <div className="flex items-start space-x-2 sm:space-x-3">
                 <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-brand-primary mt-0.5" />
                 <p className="text-sm sm:text-base text-brand-secondary dark:text-gray-300">
-                  via Alfonso Salardi, 12, 22100 - COMO, Italy
+                  {t('footer.address')}
                 </p>
               </div>
               <div className="flex items-center space-x-2 sm:space-x-3">
                 <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-brand-primary" />
                 <p className="text-sm sm:text-base text-brand-secondary dark:text-gray-300">
-                  +39 031 123 4567
+                  {t('footer.phone')}
                 </p>
               </div>
               <div className="flex items-center space-x-2 sm:space-x-3">
                 <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-brand-primary" />
                 <p className="text-sm sm:text-base text-brand-secondary dark:text-gray-300">
-                  info@handlinecompany.com
+                  {t('footer.email')}
                 </p>
               </div>
             </div>
@@ -83,90 +85,90 @@ export function Footer() {
           <div className="lg:col-span-3">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
               <div className="space-y-4">
-                <h3 className="text-base sm:text-lg font-bold text-brand-dark dark:text-white">Products</h3>
+                <h3 className="text-base sm:text-lg font-bold text-brand-dark dark:text-white">{t('footer.sections.products.title')}</h3>
                 <ul className="space-y-2 sm:space-y-3">
                   <li>
                     <Link href="/products/heat-resistant" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Heat Resistant
+                      {t('footer.sections.products.links.heatResistant')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/products/cut-resistant" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Cut Resistant
+                      {t('footer.sections.products.links.cutResistant')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/products/welding" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Welding
+                      {t('footer.sections.products.links.welding')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/products/chemical-resistant" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Chemical
+                      {t('footer.sections.products.links.chemical')}
                     </Link>
                   </li>
                 </ul>
               </div>
               
               <div className="space-y-4">
-                <h3 className="text-base sm:text-lg font-bold text-brand-dark dark:text-white">Industries</h3>
+                <h3 className="text-base sm:text-lg font-bold text-brand-dark dark:text-white">{t('footer.sections.industries.title')}</h3>
                 <ul className="space-y-2 sm:space-y-3">
                   <li>
                     <Link href="/industries/glass" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Glass
+                      {t('footer.sections.industries.links.glass')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/industries/metal" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Metalworking
+                      {t('footer.sections.industries.links.metalworking')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/industries/welding" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Welding
+                      {t('footer.sections.industries.links.welding')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/industries/automotive" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Automotive
+                      {t('footer.sections.industries.links.automotive')}
                     </Link>
                   </li>
                 </ul>
               </div>
               
               <div className="space-y-4 col-span-2 md:col-span-1">
-                <h3 className="text-base sm:text-lg font-bold text-brand-dark dark:text-white">Company</h3>
+                <h3 className="text-base sm:text-lg font-bold text-brand-dark dark:text-white">{t('footer.sections.company.title')}</h3>
                 <ul className="space-y-2 sm:space-y-3">
                   <li>
                     <Link href="/about" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      About Us
+                      {t('footer.sections.company.links.about')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/about#certifications" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Certifications
+                      {t('footer.sections.company.links.certifications')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/blog" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Blog
+                      {t('footer.sections.company.links.blog')}
                     </Link>
                   </li>
                   <li>
                     <Link href="/contact" className="inline-flex items-center text-sm sm:text-base text-brand-secondary dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
                       <ChevronRight className="h-3 w-3 mr-1 text-brand-primary/70" />
-                      Contact
+                      {t('footer.sections.company.links.contact')}
                     </Link>
                   </li>
                 </ul>
@@ -179,20 +181,20 @@ export function Footer() {
         <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-brand-primary/10 dark:border-brand-primary/20">
           <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
             <p className="text-xs sm:text-sm text-brand-secondary dark:text-gray-400">
-              &copy; {currentYear} HandLine Company. All rights reserved.
+              &copy; {currentYear} HandLine Company. {t('footer.legal.copyright')}
             </p>
             <div className="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2">
               <Link href="/legal?tab=privacy" className="text-xs sm:text-sm text-brand-secondary dark:text-gray-400 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
-                Privacy Policy
+                {t('footer.legal.links.privacy')}
               </Link>
               <Link href="/legal?tab=terms" className="text-xs sm:text-sm text-brand-secondary dark:text-gray-400 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
-                Terms of Service
+                {t('footer.legal.links.terms')}
               </Link>
               <Link href="/legal?tab=cookies" className="text-xs sm:text-sm text-brand-secondary dark:text-gray-400 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
-                Cookie Policy
+                {t('footer.legal.links.cookies')}
               </Link>
               <Link href="/legal?tab=standards" className="text-xs sm:text-sm text-brand-secondary dark:text-gray-400 hover:text-brand-primary dark:hover:text-brand-primary transition-colors">
-                EN-Standards
+                {t('footer.legal.links.standards')}
               </Link>
             </div>
           </div>

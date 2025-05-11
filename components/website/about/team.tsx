@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Linkedin, Mail, Globe } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface TeamMember {
   id: string;
@@ -95,18 +96,19 @@ const teamMembers: TeamMember[] = [
 ];
 
 export const Team = () => {
+  const { t } = useLanguage();
   return (
     <section id="our-team" className="py-10 pb-24 bg-[#F5EFE0]/80 dark:bg-transparent">
       <div className="container">
         <div className="text-center mb-8">
           <Badge className="mb-2 bg-brand-primary/10 text-brand-primary border-brand-primary/20">
-            Our People
+            {t('about.team.badge')}
           </Badge>
           <h2 className="text-3xl font-bold text-brand-dark dark:text-white mb-2">
-            Meet the HandLine Team
+            {t('about.team.heading')}
           </h2>
           <p className="text-lg text-brand-secondary dark:text-gray-300 max-w-2xl mx-auto">
-            Our dedicated professionals combine decades of experience with a passion for safety innovation.
+            {t('about.team.description')}
           </p>
         </div>
 

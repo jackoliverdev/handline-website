@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { MapPin, Phone, Mail, Building2, MapIcon, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from "@/lib/context/language-context";
 
 // Extend Window interface to include Commutes
 declare global {
@@ -36,6 +37,7 @@ const TravelMode = {
 };
 
 export function ContactInfo() {
+  const { t } = useLanguage();
   const mapRef = useRef<HTMLDivElement>(null);
   const initialStatePanelRef = useRef<HTMLDivElement>(null);
   const destinationPanelRef = useRef<HTMLDivElement>(null);
@@ -267,10 +269,10 @@ export function ContactInfo() {
                           if (infoPanel) {
                             infoPanel.innerHTML = \`
                               <h1 class="heading" style="font: 14px Montserrat, Arial, sans-serif; margin: 0;">
-                                Travel to Hand Line Company
+                                \${t('contact.info.directionsTitle')}
                               </h1>
                               <p style="font: 12px Open Sans, Arial, sans-serif; margin: 5px 0;">
-                                Distance: \${distanceText} • Travel time: \${durationText}
+                                \${t('contact.info.directionsDescription')}
                               </p>
                             \`;
                           }
@@ -313,81 +315,68 @@ export function ContactInfo() {
     };
   }, [isDesktop]);
   
+  const contactInfo = [
+    {
+      icon: Building2,
+      title: t('contact.info.address.title'),
+      content: t('contact.info.address.content'),
+    },
+    {
+      icon: Phone,
+      title: t('contact.info.phone.title'),
+      content: t('contact.info.phone.content'),
+    },
+    {
+      icon: Mail,
+      title: t('contact.info.email.title'),
+      content: t('contact.info.email.content'),
+    },
+  ];
+
   return (
     <div>
-      {/* Section Header - to match the Contact Form header style */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mb-12 text-center"
+        className="mb-8 text-left"
         id="contact-information"
         style={{ scrollMarginTop: "100px" }}
       >
-        <div className="inline-flex items-center mb-6 rounded-full bg-brand-primary/10 px-4 py-1 text-sm border border-[#F28C38]/40 backdrop-blur-sm">
-          <Shield className="mr-2 h-4 w-4 text-brand-primary" />
-          <span className="text-brand-dark dark:text-white font-medium">
-            Our Headquarters
-          </span>
-        </div>
-        
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-dark dark:text-white">Find Our Location</h2>
-        <p className="mx-auto mt-4 text-lg text-brand-secondary dark:text-gray-300 max-w-xl">
-          Visit our headquarters in Milan or contact us directly using the information below.
-        </p>
+        <h2 className="text-2xl font-bold tracking-tight text-brand-dark dark:text-white mb-2">{t('contact.info.title')}</h2>
+        <p className="text-brand-secondary dark:text-gray-300 mb-6">{t('contact.info.description')}</p>
       </motion.div>
-
       <div className="space-y-6">
         <Card className="p-6 bg-[#F5EFE0]/80 dark:bg-transparent border-brand-primary/10 dark:border-brand-primary/20 shadow-sm backdrop-blur-sm">
-          <h3 className="text-xl font-semibold mb-4 text-brand-dark dark:text-white">Contact Information</h3>
-          <div className="space-y-4">
-            <div className="flex items-start">
-              <Building2 className="h-5 w-5 text-brand-primary mr-3 mt-0.5 flex-shrink-0" />
+          <h3 className="text-xl font-semibold mb-4 text-brand-dark dark:text-white">{t('contact.info.contactInfoTitle')}</h3>
+          <div className="space-y-2">
+            <div className="flex items-start gap-3">
+              <Building2 className="h-5 w-5 text-brand-primary mt-1" />
               <div>
-                <p className="font-medium text-brand-dark dark:text-white">{companyDetails.name}</p>
+                <div className="font-medium text-brand-dark dark:text-white">{t('contact.info.address.title')}</div>
+                <div className="text-brand-secondary dark:text-gray-300">{t('contact.info.address.content')}</div>
               </div>
             </div>
-            
-            <div className="flex items-start">
-              <MapPin className="h-5 w-5 text-brand-primary mr-3 mt-0.5 flex-shrink-0" />
+            <div className="flex items-start gap-3">
+              <Phone className="h-5 w-5 text-brand-primary mt-1" />
               <div>
-                <p className="text-sm text-brand-secondary dark:text-gray-300">{companyDetails.address}</p>
+                <div className="font-medium text-brand-dark dark:text-white">{t('contact.info.phone.title')}</div>
+                <div className="text-brand-secondary dark:text-gray-300">{t('contact.info.phone.content')}</div>
               </div>
             </div>
-            
-            <div className="flex items-start">
-              <Phone className="h-5 w-5 text-brand-primary mr-3 mt-0.5 flex-shrink-0" />
+            <div className="flex items-start gap-3">
+              <Mail className="h-5 w-5 text-brand-primary mt-1" />
               <div>
-                <p className="text-sm text-brand-secondary dark:text-gray-300">
-                  <a 
-                    href={`tel:${companyDetails.phone.replace(/\s+/g, '')}`} 
-                    className="hover:text-brand-primary transition-colors"
-                  >
-                    {companyDetails.phone}
-                  </a>
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <Mail className="h-5 w-5 text-brand-primary mr-3 mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm text-brand-secondary dark:text-gray-300">
-                  <a 
-                    href={`mailto:${companyDetails.email}`} 
-                    className="hover:text-brand-primary transition-colors"
-                  >
-                    {companyDetails.email}
-                  </a>
-                </p>
+                <div className="font-medium text-brand-dark dark:text-white">{t('contact.info.email.title')}</div>
+                <div className="text-brand-secondary dark:text-gray-300">{t('contact.info.email.content')}</div>
               </div>
             </div>
           </div>
         </Card>
         
         <Card className="p-6 bg-[#F5EFE0]/80 dark:bg-transparent border-brand-primary/10 dark:border-brand-primary/20 shadow-sm backdrop-blur-sm">
-          <h3 className="text-xl font-semibold mb-4 text-brand-dark dark:text-white">Find Us</h3>
+          <h3 className="text-xl font-semibold mb-4 text-brand-dark dark:text-white">{t('contact.info.findUsTitle')}</h3>
           
           {/* Commutes widget container for desktop only */}
           <div ref={svgContainerRef} style={{ display: 'none' }} />
@@ -449,10 +438,10 @@ export function ContactInfo() {
                     
                     <div className="description" style={{ flexGrow: 1, minWidth: 0, padding: '0 10px' }}>
                       <h1 className="heading" style={{ font: '14px Montserrat, Arial, sans-serif', margin: 0, color: '#1E1E1E', lineHeight: '1.3' }}>
-                        Travel to Hand Line Company
+                        {t('contact.info.directionsTitle')}
                       </h1>
                       <p style={{ color: '#5A5A5A', font: '12px Open Sans, Arial, sans-serif', margin: '4px 0 0 0', lineHeight: '1.3' }}>
-                        Get directions to our main facility in Como
+                        {t('contact.info.directionsDescription')}
                       </p>
                     </div>
                     
@@ -484,7 +473,7 @@ export function ContactInfo() {
                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
                       </svg>
                       <span style={{ font: 'normal 600 13px/16px Montserrat, Arial, sans-serif', paddingLeft: '6px' }}>
-                        Get directions
+                        {t('contact.info.directionsButton')}
                       </span>
                     </button>
                   </div>

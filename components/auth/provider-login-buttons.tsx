@@ -10,6 +10,7 @@ import { FC, useState } from "react";
 import { useAuth } from "reactfire";
 import { createUserProfile, getUserProfile } from "@/lib/user-service";
 import { saveUserToFirestore } from "@/lib/auth";
+import { useLanguage } from '@/lib/context/language-context';
 
 interface Props {
   onSignIn?: () => void;
@@ -18,6 +19,7 @@ interface Props {
 export const ProviderLoginButtons: FC<Props> = ({ onSignIn }) => {
   const auth = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useLanguage();
 
   const doProviderSignIn = async (provider: GoogleAuthProvider) => {
     try {
@@ -78,19 +80,18 @@ export const ProviderLoginButtons: FC<Props> = ({ onSignIn }) => {
           } catch (finalError) {
             console.error("Final attempt failed:", finalError);
             toast({ 
-              title: "Profile Setup Issue", 
-              description: "Your sign-in was successful but profile setup failed. Some features may be limited.",
+              title: t('auth.profileSetupIssue'),
               variant: "destructive"
             });
           }
         }
       }
       
-      toast({ title: "Signed in!" });
+      toast({ title: t('auth.successSignIn') });
       onSignIn?.();
     } catch (err: any) {
       console.error(err);
-      toast({ title: "Error signing in", description: `${err}` });
+      toast({ title: t('auth.errorSignIn'), description: `${err}` });
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +131,7 @@ export const ProviderLoginButtons: FC<Props> = ({ onSignIn }) => {
             d="M5.27698177,14.2678769 C5.03832634,13.556323 4.90909091,12.7937589 4.90909091,12 C4.90909091,11.2182781 5.03443647,10.4668121 5.26620003,9.76452941 L1.23999023,6.65002441 C0.43658717,8.26043162 0,10.0753848 0,12 C0,13.9195484 0.444780743,15.7301709 1.23746264,17.3349879 L5.27698177,14.2678769 Z"
           />
         </svg>
-        <span className="font-medium">Continue with Google</span>
+        <span className="font-medium">{t('auth.continueWithGoogle')}</span>
       </Button>
     </div>
   );

@@ -15,8 +15,10 @@ import {
 import Image from "next/image";
 import { getFeaturedProducts, Product } from "@/lib/products-service";
 import { MiniProductCard } from "@/components/app/mini-product-card";
+import { useLanguage } from "@/lib/context/language-context";
 
 export default function DashboardPage() {
+  const { language } = useLanguage();
   const [activeTab, setActiveTab] = useState("overview");
   const [recommendedProducts, setRecommendedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const loadRecommendedProducts = async () => {
       try {
-        const { products } = await getFeaturedProducts();
+        const { products } = await getFeaturedProducts(language);
         setRecommendedProducts(products);
       } catch (error) {
         console.error("Error loading recommended products:", error);
@@ -35,7 +37,7 @@ export default function DashboardPage() {
     };
     
     loadRecommendedProducts();
-  }, []);
+  }, [language]);
 
   // Sample data for the customer dashboard
   const recentOrders = [

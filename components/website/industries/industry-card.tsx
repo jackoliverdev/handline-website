@@ -10,27 +10,12 @@ import { Industry as IndustryType } from "@/lib/industries-service";
 
 export interface IndustryCardProps {
   industry: IndustryType;
+  t: (key: string) => string;
 }
 
-export const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
-  // Derive applications from the description if available
-  const getApplications = (description: string): string[] => {
-    // Extract applications from description by looking for list items
-    const applications: string[] = [];
-    // Check if description contains bullet points with applications
-    if (description.includes('- ')) {
-      const lines = description.split('\n');
-      for (const line of lines) {
-        if (line.trim().startsWith('- ')) {
-          const application = line.trim().substring(2).trim();
-          applications.push(application);
-        }
-      }
-    }
-    return applications.length > 0 ? applications : ['Contact us for details'];
-  };
-
-  const applications = getApplications(industry.description);
+export const IndustryCard: React.FC<IndustryCardProps> = ({ industry, t }) => {
+  // Use localised features array, fallback to contact message if empty
+  const features = industry.features && industry.features.length > 0 ? industry.features : [t('industries.contactForDetails')];
 
   return (
     <div className="group relative overflow-hidden rounded-lg border bg-[#F5EFE0]/80 dark:bg-transparent shadow-sm transition-all duration-300 hover:shadow-md border-brand-primary/10 dark:border-brand-primary/20 backdrop-blur-sm dark:backdrop-blur-none h-full flex flex-col">
@@ -64,22 +49,22 @@ export const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
           {industry.description.split('\n\n')[0] || industry.description}
         </p>
         
-        {/* Applications */}
-        {applications && applications.length > 0 && (
+        {/* Key Features */}
+        {features && features.length > 0 && (
           <div className="mb-4 mt-auto">
             <h4 className="text-sm font-medium text-brand-dark dark:text-white mb-2 flex items-center">
               <Shield className="mr-1 h-4 w-4 text-brand-primary" />
-              <span>Key Features</span>
+              <span>{t('industries.keyFeatures')}</span>
             </h4>
             <div className="flex flex-wrap gap-1">
-              {applications.slice(0, 3).map((application, index) => (
+              {features.slice(0, 3).map((feature, index) => (
                 <Badge key={index} variant="outline" className="text-xs bg-brand-primary/5 border-brand-primary/20">
-                  {application.length > 30 ? application.substring(0, 30) + '...' : application}
+                  {feature.length > 30 ? feature.substring(0, 30) + '...' : feature}
                 </Badge>
               ))}
-              {applications.length > 3 && (
+              {features.length > 3 && (
                 <Badge variant="outline" className="text-xs bg-brand-primary/5 border-brand-primary/20">
-                  +{applications.length - 3}
+                  +{features.length - 3}
                 </Badge>
               )}
             </div>
@@ -94,7 +79,7 @@ export const IndustryCard: React.FC<IndustryCardProps> = ({ industry }) => {
           asChild
         >
           <Link href={`/industries/${industry.slug}`}>
-            <span>View Solutions</span>
+            <span>{t('industries.viewSolutions')}</span>
             <ArrowRight className="h-4 w-4 ml-1" />
           </Link>
         </Button>

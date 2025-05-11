@@ -8,22 +8,27 @@ import { BlogCard } from './blog-card';
 import { BlogPost } from '@/lib/blog-service';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/lib/context/language-context';
 
 interface BlogGridProps {
   blogPosts: BlogPost[];
+  language: string;
 }
 
-export function BlogGrid({ blogPosts }: BlogGridProps) {
+export function BlogGrid({ blogPosts, language }: BlogGridProps) {
+  const { t } = useLanguage();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [tags, setTags] = useState<string[]>([]);
 
-  // Extract unique tags from blog posts
+  // Extract unique tags from blog posts (localised)
   useEffect(() => {
-    const allTags = blogPosts.flatMap((post) => post.tags || []);
+    const allTags = blogPosts.flatMap((post) =>
+      (post.tags_locales && post.tags_locales[language]) || post.tags || []
+    );
     const uniqueTags = Array.from(new Set(allTags));
     setTags(uniqueTags);
-  }, [blogPosts]);
+  }, [blogPosts, language]);
 
   // Handle tag selection
   const toggleTag = (tag: string) => {
@@ -34,14 +39,15 @@ export function BlogGrid({ blogPosts }: BlogGridProps) {
     );
   };
 
-  // Filter blog posts based on search query and selected tags
+  // Filter blog posts based on search query and selected tags (localised)
   const filteredPosts = blogPosts.filter((post) => {
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.summary.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesTags = selectedTags.length === 0 || 
-      (post.tags && post.tags.some(tag => selectedTags.includes(tag)));
-    
+    const title = (post.title_locales && post.title_locales[language]) || post.title;
+    const summary = (post.summary_locales && post.summary_locales[language]) || post.summary;
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      summary.toLowerCase().includes(searchQuery.toLowerCase());
+    const postTags = (post.tags_locales && post.tags_locales[language]) || post.tags || [];
+    const matchesTags = selectedTags.length === 0 ||
+      (postTags && postTags.some(tag => selectedTags.includes(tag)));
     return matchesSearch && matchesTags;
   });
 
@@ -70,13 +76,12 @@ export function BlogGrid({ blogPosts }: BlogGridProps) {
         <div className="inline-flex items-center mb-6 rounded-full bg-brand-primary/10 px-4 py-1 text-sm border border-[#F28C38]/40 backdrop-blur-sm">
           <BookOpen className="mr-2 h-4 w-4 text-brand-primary" />
           <span className="text-brand-dark dark:text-white font-medium">
-            Safety Knowledge
+            {t('blog.grid.badge')}
           </span>
         </div>
-        
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-dark dark:text-white">HandLine Safety Resources</h2>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-dark dark:text-white">{t('blog.grid.title')}</h2>
         <p className="mx-auto mt-4 text-lg text-brand-secondary dark:text-gray-300">
-          Discover expert insights about industrial safety gloves, protective equipment, and best practices for workplace hand protection.
+          {t('blog.grid.description')}
         </p>
       </motion.div>
 
@@ -86,13 +91,12 @@ export function BlogGrid({ blogPosts }: BlogGridProps) {
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="Search articles..."
+            placeholder={t('blog.grid.searchPlaceholder')}
             className="pl-10 text-ui-md"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <Badge
@@ -110,7 +114,7 @@ export function BlogGrid({ blogPosts }: BlogGridProps) {
       {/* Results count */}
       <div className="mb-8">
         <p className="text-body-md text-muted-foreground">
-          Showing <span className="font-medium text-foreground">{filteredPosts.length}</span> articles
+          {t('blog.grid.showing')} <span className="font-medium text-foreground">{filteredPosts.length}</span> {t('blog.grid.articles')}
         </p>
       </div>
 
@@ -123,13 +127,13 @@ export function BlogGrid({ blogPosts }: BlogGridProps) {
           className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {filteredPosts.map((post, index) => (
-            <BlogCard key={post.slug} post={post} index={index} />
+            <BlogCard key={post.slug} post={post} index={index} language={language} />
           ))}
         </motion.div>
       ) : (
         <div className="flex h-60 flex-col items-center justify-center rounded-xl border border-dashed text-center">
-          <p className="text-heading-5 mb-2">No articles found</p>
-          <p className="text-body-md text-muted-foreground">Try adjusting your search or filter criteria</p>
+          <p className="text-heading-5 mb-2">{t('blog.grid.noArticles')}</p>
+          <p className="text-body-md text-muted-foreground">{t('blog.grid.noArticlesDescription')}</p>
         </div>
       )}
     </section>

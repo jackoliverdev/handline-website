@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface SubCategoryFilterProps {
   subCategories: string[];
@@ -17,6 +18,7 @@ export const SubCategoryFilter = ({
   isExpanded,
   toggleSection,
 }: SubCategoryFilterProps) => {
+  const { t } = useLanguage();
   if (subCategories.length === 0) return null;
 
   return (
@@ -26,7 +28,7 @@ export const SubCategoryFilter = ({
         onClick={() => toggleSection("subCategory")}
       >
         <h3 className="text-sm font-medium text-brand-dark dark:text-white">
-          Sub-Category
+          {t('products.filters.subCategory')}
           {selectedSubCategories.length > 0 && (
             <Badge className="ml-2 bg-brand-primary text-white">{selectedSubCategories.length}</Badge>
           )}

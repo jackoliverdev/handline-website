@@ -7,16 +7,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ChevronRight, Shield } from "lucide-react";
 import { getAllIndustries, Industry } from "@/lib/industries-service";
+import { useLanguage } from "@/lib/context/language-context";
 
 export const IndustrySolutions = () => {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { t, language } = useLanguage();
   
   useEffect(() => {
     const loadIndustries = async () => {
       try {
-        const { data } = await getAllIndustries();
+        const { data } = await getAllIndustries(language);
         // Take only the first 4 industries for display
         setIndustries(data.slice(0, 4));
       } catch (error) {
@@ -27,7 +29,7 @@ export const IndustrySolutions = () => {
     };
     
     loadIndustries();
-  }, []);
+  }, [language]); // Add language as a dependency
   
   // Get the first paragraph of the description for a summary
   const getShortDescription = (industry: Industry) => {
@@ -58,10 +60,10 @@ export const IndustrySolutions = () => {
         <div className="flex flex-col items-center mb-16 text-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-brand-dark dark:text-white mb-4 font-heading">
-              Industry <span className="text-brand-primary">Solutions</span>
+              {t('industrySolutions.title')}
             </h2>
             <p className="max-w-2xl text-lg text-brand-secondary dark:text-gray-300 mx-auto">
-              We design specialised hand protection for a wide range of industries, ensuring safety, comfort, and precision for every application.
+              {t('industrySolutions.description')}
             </p>
           </div>
         </div>
@@ -72,7 +74,7 @@ export const IndustrySolutions = () => {
           </div>
         ) : industries.length === 0 ? (
           <div className="text-center py-16 border border-brand-primary/10 dark:border-brand-primary/20 rounded-xl bg-white/50 dark:bg-gray-800/30">
-            <p className="text-lg text-brand-secondary dark:text-gray-300">No industry solutions available at the moment.</p>
+            <p className="text-lg text-brand-secondary dark:text-gray-300">{t('industrySolutions.noIndustries')}</p>
           </div>
         ) : (
           <div 
@@ -106,7 +108,7 @@ export const IndustrySolutions = () => {
                         {getShortDescription(industry)}
                       </p>
                       <div className="flex items-center text-brand-primary font-medium group-hover:text-brand-primary/80">
-                        <span>Learn more</span>
+                        <span>{t('industrySolutions.learnMore')}</span>
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </div>
                     </CardContent>
@@ -120,7 +122,7 @@ export const IndustrySolutions = () => {
         <div className="flex justify-center mt-8 sm:mt-12">
           <Button asChild variant="outline" className="group border-brand-primary text-brand-primary dark:text-white dark:border-white hover:text-brand-primary hover:bg-white/80 dark:hover:bg-white/10">
             <Link href="/industries" className="flex items-center gap-1.5">
-              <span>View all industries</span>
+              <span>{t('industrySolutions.viewAll')}</span>
               <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </Button>

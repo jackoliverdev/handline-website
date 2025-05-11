@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface ProductImageGalleryProps {
   mainImage: string;
@@ -28,6 +29,8 @@ export const ProductImageGallery = ({
   isNew,
   outOfStock
 }: ProductImageGalleryProps) => {
+  const { t } = useLanguage();
+
   // Collect all available images
   const allImages = [
     mainImage,
@@ -78,13 +81,13 @@ export const ProductImageGallery = ({
         
         {isFeatured && (
           <Badge className="absolute left-4 top-4 z-10 bg-brand-primary text-white px-3 py-1.5 shadow-md font-medium">
-            Featured
+            {t('products.featured')}
           </Badge>
         )}
         
         {isNew && (
           <Badge className="absolute right-4 top-4 z-10 bg-brand-primary text-white px-3 py-1.5 shadow-md font-medium">
-            New
+            {t('products.new')}
           </Badge>
         )}
 

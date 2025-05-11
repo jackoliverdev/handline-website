@@ -14,6 +14,7 @@ import { getAllIndustries, deleteIndustry } from "@/lib/industries-service";
 import { Factory, Plus, Edit, Trash, Star, Eye, Calendar, Image as ImageIcon, Tag, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/lib/context/language-context";
 
 // Industry type definition
 interface Industry {
@@ -29,6 +30,7 @@ interface Industry {
 }
 
 export default function IndustryManagementPage() {
+  const { language } = useLanguage();
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,7 +42,7 @@ export default function IndustryManagementPage() {
     async function loadIndustries() {
       try {
         // Fetch all industries
-        const { data } = await getAllIndustries();
+        const { data } = await getAllIndustries(language);
         if (data) {
           setIndustries(data as Industry[]);
         }
@@ -57,7 +59,7 @@ export default function IndustryManagementPage() {
     }
     
     loadIndustries();
-  }, []);
+  }, [language]);
   
   // Filter industries based on search term
   const filteredIndustries = industries.filter(industry => 

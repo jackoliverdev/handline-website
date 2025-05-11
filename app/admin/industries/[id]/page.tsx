@@ -19,6 +19,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MiniProductCard } from "@/components/app/mini-product-card";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface Product {
   id: string;
@@ -31,6 +32,7 @@ interface Product {
 
 export default function EditIndustryPage({ params }: { params: { id: string } }) {
   const router = useRouter();
+  const { language } = useLanguage();
   const [industry, setIndustry] = useState({
     id: "",
     industry_name: "",
@@ -63,7 +65,7 @@ export default function EditIndustryPage({ params }: { params: { id: string } })
     async function loadIndustry() {
       try {
         setIsLoading(true);
-        const data = await getIndustryById(params.id);
+        const data = await getIndustryById(params.id, language);
         if (data) {
           const industryData = {
             id: data.id,
@@ -120,7 +122,7 @@ export default function EditIndustryPage({ params }: { params: { id: string } })
 
     loadIndustry();
     loadProducts();
-  }, [params.id, router]);
+  }, [params.id, router, language]);
 
   // Check for changes
   useEffect(() => {

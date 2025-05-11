@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { HelpCircle, ChevronDown, ArrowRight, Shield } from 'lucide-react';
 import Link from 'next/link';
 import * as React from 'react';
+import { useLanguage } from "@/lib/context/language-context";
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -13,57 +14,49 @@ type MotionDivProps = React.ComponentProps<typeof motion.div> & {
   ref?: React.Ref<HTMLDivElement>;
 };
 
-// FAQ content
-const faqs = [
-  {
-    question: 'What types of safety gloves do you offer?',
-    answer:
-      'HandLine manufactures a comprehensive range of safety gloves including heat-resistant gloves (up to 350°C), cut-resistant gloves (up to Level 5), general-purpose work gloves, chemical-resistant gloves, and specialized gloves for various industries.',
-  },
-  {
-    question: 'How do I choose the right safety gloves for my application?',
-    answer:
-      'We recommend assessing the specific hazards in your workplace (heat, cuts, chemicals, etc.), considering comfort and dexterity requirements, and ensuring proper sizing. Our team can provide personalized recommendations based on your industry and specific needs.',
-  },
-  {
-    question: 'Are your gloves CE certified?',
-    answer:
-      'Yes, all HandLine safety gloves are CE certified and comply with relevant European standards including EN 388 for mechanical risks, EN 407 for thermal risks, and other applicable safety standards.',
-  },
-  {
-    question: 'Do you offer custom solutions for specific industries?',
-    answer:
-      'Absolutely! We work closely with clients in various industries to develop tailored hand protection solutions. Contact our team to discuss your specific requirements, and we can develop or recommend products that meet your exact needs.',
-  },
-  {
-    question: 'How can I request product samples?',
-    answer:
-      'You can request product samples by contacting our sales team through our contact form. Please specify which products you\'re interested in, your industry, and intended application. We typically provide samples for evaluation within 1-2 weeks.',
-  }
-];
-
 export function ContactFaq() {
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
+  // Get FAQ questions from translations
+  const faqs = [
+    {
+      question: t('contact.faq.questions.1.question'),
+      answer: t('contact.faq.questions.1.answer'),
+    },
+    {
+      question: t('contact.faq.questions.2.question'),
+      answer: t('contact.faq.questions.2.answer'),
+    },
+    {
+      question: t('contact.faq.questions.3.question'),
+      answer: t('contact.faq.questions.3.answer'),
+    },
+    {
+      question: t('contact.faq.questions.4.question'),
+      answer: t('contact.faq.questions.4.answer'),
+    },
+  ];
+
   return (
-    <section className="py-16 md:py-24 bg-[#F5EFE0]/80 dark:bg-transparent">
+    <section className="pt-8 pb-16 md:pt-12 md:pb-24 bg-[#F5EFE0]/80 dark:bg-transparent">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mb-12 text-center"
+          className="mx-auto mb-8 text-center"
         >
           <div className="mb-4 inline-flex items-center rounded-full bg-brand-primary/10 px-3 py-1 text-sm border border-[#F28C38]/40 backdrop-blur-sm">
             <Shield className="mr-2 h-4 w-4 text-brand-primary" />
             <span className="text-brand-dark dark:text-white font-medium">
-              Safety First
+              {t('contact.faq.badge')}
             </span>
           </div>
 
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-dark dark:text-white">Frequently Asked Questions</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-brand-dark dark:text-white">{t('contact.faq.title')}</h2>
           <p className="mt-4 text-lg text-brand-secondary dark:text-gray-300 max-w-2xl mx-auto">
-            Find quick answers to common questions about our safety gloves and services
+            {t('contact.faq.description')}
           </p>
         </motion.div>
 
@@ -138,7 +131,7 @@ export function ContactFaq() {
                 href="#contact-form"
                 className="flex items-center gap-2"
               >
-                Need more information? Contact our experts
+                {t('contact.faq.cta')}
                 <ArrowRight className="h-4 w-4 transition-all duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>

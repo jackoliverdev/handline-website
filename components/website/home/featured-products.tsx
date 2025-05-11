@@ -7,17 +7,19 @@ import Link from "next/link";
 import { ChevronRight, Flame, Scissors, Eye } from "lucide-react";
 import { getFeaturedProducts, Product } from "@/lib/products-service";
 import { ProductPreviewModal } from "@/components/website/products/product-preview-modal";
+import { useLanguage } from "@/lib/context/language-context";
 
 export const FeaturedProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
+  const { t, language } = useLanguage();
   
   useEffect(() => {
     const loadFeaturedProducts = async () => {
       try {
-        const { products } = await getFeaturedProducts();
+        const { products } = await getFeaturedProducts(language);
         setProducts(products);
       } catch (error) {
         console.error("Error loading featured products:", error);
@@ -27,7 +29,7 @@ export const FeaturedProducts = () => {
     };
     
     loadFeaturedProducts();
-  }, []);
+  }, [language]);
   
   const handlePreviewClick = (product: Product) => {
     setPreviewProduct(product);
@@ -43,10 +45,10 @@ export const FeaturedProducts = () => {
         <div className="flex flex-col items-center mb-8 sm:mb-12 text-center">
           <div className="max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-bold text-brand-dark dark:text-white mb-4 font-heading">
-              Featured <span className="text-brand-primary">Products</span>
+              {t('featuredProducts.title')}
             </h2>
             <p className="text-lg text-brand-secondary dark:text-gray-300">
-              Discover our most popular safety gloves, designed to provide superior protection and comfort across different industrial applications.
+              {t('featuredProducts.description')}
             </p>
           </div>
         </div>
@@ -57,7 +59,7 @@ export const FeaturedProducts = () => {
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-16 border border-brand-primary/10 dark:border-brand-primary/20 rounded-xl bg-white/50 dark:bg-gray-800/30">
-            <p className="text-lg text-brand-secondary dark:text-gray-300">No featured products available at the moment.</p>
+            <p className="text-lg text-brand-secondary dark:text-gray-300">{t('featuredProducts.noProducts')}</p>
           </div>
         ) : (
           <div className="relative">
@@ -115,7 +117,7 @@ export const FeaturedProducts = () => {
                             <div className="flex items-center">
                               <Flame className="h-3 w-3 sm:h-4 sm:w-4 text-brand-primary mr-1 sm:mr-1.5" />
                               <div>
-                                <p className="text-2xs sm:text-xs text-brand-secondary dark:text-gray-400">Temperature</p>
+                                <p className="text-2xs sm:text-xs text-brand-secondary dark:text-gray-400">{t('featuredProducts.specs.temperature')}</p>
                                 <p className="text-sm sm:text-base font-medium text-brand-dark dark:text-white">{product.temperature_rating}°C</p>
                               </div>
                             </div>
@@ -124,7 +126,7 @@ export const FeaturedProducts = () => {
                             <div className="flex items-center">
                               <Scissors className="h-3 w-3 sm:h-4 sm:w-4 text-brand-primary mr-1 sm:mr-1.5" />
                               <div>
-                                <p className="text-2xs sm:text-xs text-brand-secondary dark:text-gray-400">Cut Level</p>
+                                <p className="text-2xs sm:text-xs text-brand-secondary dark:text-gray-400">{t('featuredProducts.specs.cutLevel')}</p>
                                 <p className="text-sm sm:text-base font-medium text-brand-dark dark:text-white">{product.cut_resistance_level}</p>
                               </div>
                             </div>
@@ -139,7 +141,7 @@ export const FeaturedProducts = () => {
                             onClick={() => handlePreviewClick(product)}
                           >
                             <Eye className="mr-1 sm:mr-1.5 h-3 w-3 sm:h-4 sm:w-4" />
-                            Preview
+                            {t('featuredProducts.preview')}
                           </Button>
                           
                           <Button 
@@ -149,7 +151,7 @@ export const FeaturedProducts = () => {
                             asChild
                           >
                             <Link href={`/products/${encodedProductName}`} className="flex items-center justify-center">
-                              Details
+                              {t('featuredProducts.details')}
                               <ChevronRight className="ml-1 sm:ml-1.5 h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
                             </Link>
                           </Button>
@@ -166,7 +168,7 @@ export const FeaturedProducts = () => {
         <div className="flex justify-center mt-8 sm:mt-12">
           <Button asChild variant="outline" className="group border-brand-primary text-brand-primary dark:text-white dark:border-white hover:text-brand-primary hover:bg-white/80 dark:hover:bg-white/10">
             <Link href="/products" className="flex items-center gap-1.5">
-              <span>View all products</span>
+              <span>{t('featuredProducts.viewAll')}</span>
               <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </Button>

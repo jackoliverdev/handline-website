@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useAuth } from "reactfire";
+import { useLanguage } from '@/lib/context/language-context';
 
 interface ModalChangePasswordProps {
   isOpen: boolean;
@@ -24,20 +25,20 @@ export const ModalForgotPassword: FC<ModalChangePasswordProps> = ({
 }) => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const auth = useAuth();
+  const { t } = useLanguage();
 
   const onSubmit = async () => {
     try {
       setIsLoading(true);
       await sendPasswordResetEmail(auth, email);
       toast({
-        title: "Success!",
-        description: "Password reset email sent; please check your inbox.",
+        title: t('auth.successSignIn'),
+        description: t('auth.forgotPasswordHelp'),
       });
       setIsOpen(false);
     } catch (error) {
-      toast({ title: "Error", description: `${error}` });
+      toast({ title: t('auth.errorSignIn'), description: `${error}` });
     } finally {
       setIsLoading(false);
     }
@@ -48,13 +49,13 @@ export const ModalForgotPassword: FC<ModalChangePasswordProps> = ({
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Forgot password?</DialogTitle>
+            <DialogTitle>{t('auth.forgotPasswordTitle')}</DialogTitle>
             <DialogDescription>
-              Enter your email to reset your password
+              {t('auth.forgotPasswordDesc')}
             </DialogDescription>
           </DialogHeader>
 
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email">{t('auth.email')}</Label>
           <Input
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
@@ -62,13 +63,14 @@ export const ModalForgotPassword: FC<ModalChangePasswordProps> = ({
             name="email"
             type="email"
             required
+            placeholder={t('auth.emailPlaceholder')}
           />
 
           <p className="text-[0.8rem] text-white/60 -mt-3">
-            We will send you a link to reset your password
+            {t('auth.forgotPasswordHelp')}
           </p>
           <Button disabled={isLoading} onClick={() => onSubmit()}>
-            Submit
+            {t('auth.submit')}
           </Button>
         </DialogContent>
       </Dialog>

@@ -13,11 +13,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useUser } from "reactfire";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLanguage } from '@/lib/context/language-context';
 
 export const AuthCard = () => {
   const [isShowingSignUp, setIsShowingSignUp] = useState<boolean>(false);
   const { data: user } = useUser();
   const router = useRouter();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (user) {
@@ -34,12 +36,12 @@ export const AuthCard = () => {
     <Card className="w-full border-border/40 shadow-lg">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">
-          {isShowingSignUp ? "Create Your Account" : "Welcome Back"}
+          {isShowingSignUp ? t('auth.createAccount') : t('auth.welcomeBack')}
         </CardTitle>
         <CardDescription className="text-sm text-muted-foreground">
           {isShowingSignUp 
-            ? "Create an account to access our full suite of services and features."
-            : "Enter your credentials to access your account and dashboard."}
+            ? t('auth.signUpDesc')
+            : t('auth.signInDesc')}
         </CardDescription>
       </CardHeader>
       <CardContent>

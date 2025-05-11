@@ -15,20 +15,14 @@ export const revalidate = 0;
 export default async function ProductsPage() {
   // Get the latest products from Supabase
   const { products } = await getAllProducts();
-  
   return (
     <main className="bg-brand-light dark:bg-background">
       <ProductsHero />
-      
       <section id="product-categories" className="pt-8 pb-16">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl text-brand-dark dark:text-white font-heading">
-            Browse Our Products
-          </h2>
-          
           <ProductGrid products={products} />
         </div>
       </section>
     </main>
   );
-} 
+}

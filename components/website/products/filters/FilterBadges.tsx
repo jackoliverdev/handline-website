@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { formatCutLevel } from "@/lib/product-utils";
+import { useLanguage } from "@/lib/context/language-context";
 
 interface FilterBadgesProps {
   selectedCategory: string;
@@ -30,6 +31,7 @@ export const FilterBadges = ({
   toggleIndustry,
   clearFilters,
 }: FilterBadgesProps) => {
+  const { t } = useLanguage();
   const activeFiltersCount = 
     (selectedCategory && selectedCategory !== "all" ? 1 : 0) +
     selectedSubCategories.length +
@@ -41,7 +43,7 @@ export const FilterBadges = ({
 
   return (
     <div className="mb-4 md:hidden flex flex-wrap gap-2 items-center">
-      <span className="text-sm text-brand-secondary dark:text-gray-400">Active filters:</span>
+      <span className="text-sm text-brand-secondary dark:text-gray-400">{t('products.filters.activeFilters')}</span>
       
       {selectedCategory && selectedCategory !== "all" && (
         <Badge 
@@ -138,7 +140,7 @@ export const FilterBadges = ({
         className="text-xs text-brand-primary hover:text-brand-primary/80 hover:bg-transparent px-2 h-6"
         onClick={clearFilters}
       >
-        Clear all
+        {t('products.filters.clearAll')}
       </Button>
     </div>
   );

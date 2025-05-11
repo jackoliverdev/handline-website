@@ -5,17 +5,20 @@ import { MessageSquare, PhoneCall, Mail, Sparkles, ChevronRight } from "lucide-r
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/lib/context/language-context";
 
 const SPRING_CONFIG = { stiffness: 100, damping: 30, mass: 1 };
 
-const stats = [
-  { value: '24/7', label: 'Support Available' },
-  { value: '1hr', label: 'Avg. Response Time' },
-  { value: '98%', label: 'Customer Satisfaction' },
-  { value: '40+', label: 'Years Experience' },
-];
-
 export function ContactHero() {
+  const { t } = useLanguage();
+
+  const stats = [
+    { value: '24/7', label: t('contact.hero.stats.support') },
+    { value: '1hr', label: t('contact.hero.stats.response') },
+    { value: '98%', label: t('contact.hero.stats.satisfaction') },
+    { value: '40+', label: t('contact.hero.stats.experience') },
+  ];
+
   return (
     <section className="relative overflow-hidden bg-[#F5EFE0]/80 dark:bg-transparent pt-28 pb-6 md:pt-32 md:pb-16">
       {/* Decorative Elements */}
@@ -35,7 +38,7 @@ export function ContactHero() {
             <div className="inline-flex items-center rounded-full border border-brand-primary px-3 py-1 md:px-4 md:py-1.5 text-xs md:text-sm backdrop-blur-sm">
               <Mail className="mr-1.5 h-3 w-3 md:h-4 md:w-4 text-brand-primary" />
               <span className="text-brand-dark dark:text-white font-medium">
-                We're Here To Help
+                {t('contact.hero.badge')}
               </span>
             </div>
           </motion.div>
@@ -48,7 +51,7 @@ export function ContactHero() {
             className="relative mb-4 md:mb-6"
           >
             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-brand-dark dark:text-white font-heading">
-              Contact <span className="text-brand-primary">HandLine</span>
+              {t('contact.hero.title')} <span className="text-brand-primary">{t('contact.hero.titleAccent')}</span>
             </h1>
           </motion.div>
 
@@ -60,8 +63,7 @@ export function ContactHero() {
             className="mb-6 md:mb-10"
           >
             <p className="max-w-2xl text-base md:text-lg text-brand-secondary dark:text-gray-300">
-              We're here to help with any questions you may have about our safety products and solutions. 
-              Reach out to our team and we'll get back to you as soon as possible.
+              {t('contact.hero.description')}
             </p>
           </motion.div>
 
@@ -94,7 +96,7 @@ export function ContactHero() {
             >
               <a href="#contact-form" className="flex items-center justify-center gap-1.5 md:gap-2">
                 <MessageSquare className="h-4 w-4 md:h-5 md:w-5" />
-                <span>Send a Message</span>
+                <span>{t('contact.hero.buttons.sendMessage')}</span>
                 <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </Button>
@@ -106,7 +108,7 @@ export function ContactHero() {
             >
               <a href="#contact-information" className="flex items-center justify-center gap-1.5 md:gap-2">
                 <PhoneCall className="h-4 w-4 md:h-5 md:w-5" />
-                <span>Our Information</span>
+                <span>{t('contact.hero.buttons.ourInfo')}</span>
                 <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </Button>

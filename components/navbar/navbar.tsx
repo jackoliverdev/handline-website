@@ -7,15 +7,23 @@ import { NavbarMobile } from "./navbar-mobile";
 import { usePathname } from "next/navigation";
 import { WebsiteThemeToggle } from "@/components/theme/website-theme-toggle";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/lib/context/language-context";
+import { Globe } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Navigation items
 const NAV_ITEMS = [
-  { href: "/", label: "Home" },
-  { href: "/products", label: "Products" },
-  { href: "/industries", label: "Industries" },
-  { href: "/about", label: "About Us" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", label: "navbar.home" },
+  { href: "/products", label: "navbar.products" },
+  { href: "/industries", label: "navbar.industries" },
+  { href: "/about", label: "navbar.about" },
+  { href: "/blog", label: "navbar.blog" },
+  { href: "/contact", label: "navbar.contact" },
 ];
 
 export const NavBar: FC = () => {
@@ -25,6 +33,8 @@ export const NavBar: FC = () => {
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0, x: 0, y: 0 });
   const [activeIndex, setActiveIndex] = useState(-1);
+  const { t, language, setLanguage } = useLanguage();
+  const langBtnRef = useRef<HTMLButtonElement | null>(null);
   
   // Don't render the navbar on dashboard routes
   if (pathname?.startsWith('/dashboard') || pathname?.startsWith('/app')) {
@@ -50,7 +60,7 @@ export const NavBar: FC = () => {
         y: 0
       });
     }
-  }, [pathname]);
+  }, [pathname, language]);
   
   // Handle scroll effect
   useEffect(() => {
@@ -133,7 +143,7 @@ export const NavBar: FC = () => {
                       itemRefs.current[index] = el;
                     }}
                   >
-                    {item.label}
+                    {t(item.label)}
                   </Link>
                 );
               })}
@@ -141,16 +151,32 @@ export const NavBar: FC = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <WebsiteThemeToggle 
               variant="ghost" 
-              className="rounded-full hover:bg-brand-primary/10 dark:hover:bg-brand-primary/20 text-brand-dark dark:text-gray-300 mr-1.5" 
+              className="rounded-full hover:bg-brand-primary/10 dark:hover:bg-brand-primary/20 text-brand-dark dark:text-gray-300" 
             />
+            
+            {/* Language Switcher */}
+            <DropdownMenu>
+              <DropdownMenuTrigger ref={langBtnRef} className="rounded-full hover:bg-brand-primary/10 dark:hover:bg-brand-primary/20 p-2 text-brand-dark dark:text-gray-300">
+                <Globe className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => { setLanguage('en'); langBtnRef.current?.blur(); }}>
+                  <span role="img" aria-label="English" className="mr-2">🇬🇧</span> English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => { setLanguage('it'); langBtnRef.current?.blur(); }}>
+                  <span role="img" aria-label="Italian" className="mr-2">🇮🇹</span> Italiano
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Link 
               href="/login" 
               className="px-3 py-1 bg-brand-primary text-white text-sm font-medium rounded-full hover:bg-brand-primary/90 transition-all"
             >
-              Dashboard
+              {t('navbar.dashboard')}
             </Link>
           </div>
 
